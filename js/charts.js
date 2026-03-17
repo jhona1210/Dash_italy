@@ -70,7 +70,7 @@ function initLSTTimeseries() {
       labels: UHI_DATA.years,
       datasets: [
         {
-          label: 'Urbano',
+          label: 'Urban',
           data: UHI_DATA.lstUrban,
           borderColor: COLOR.heatExtreme,
           backgroundColor: 'rgba(211,47,47,0.12)',
@@ -83,7 +83,7 @@ function initLSTTimeseries() {
           tension: 0.35,
         },
         {
-          label: 'Agrícola',
+          label: 'Agricultural',
           data: UHI_DATA.lstAgriculture,
           borderColor: COLOR.neutral,
           backgroundColor: 'rgba(253,216,53,0.08)',
@@ -96,7 +96,7 @@ function initLSTTimeseries() {
           tension: 0.35,
         },
         {
-          label: 'Bosques',
+          label: 'Forests',
           data: UHI_DATA.lstForest,
           borderColor: COLOR.vegLight,
           backgroundColor: 'rgba(102,187,106,0.12)',
@@ -109,7 +109,7 @@ function initLSTTimeseries() {
           tension: 0.35,
         },
         {
-          label: 'Agua',
+          label: 'Water',
           data: UHI_DATA.lstWater,
           borderColor: '#42A5F5',
           backgroundColor: 'rgba(66,165,245,0.08)',
@@ -141,7 +141,7 @@ function initLSTTimeseries() {
         },
       },
       yScale: { min: 34, max: 52, title: { display: true, text: 'LST (°C)', color: COLOR.axisColor, font: { size: 11 } } },
-      xScale: { title: { display: true, text: 'Año', color: COLOR.axisColor, font: { size: 11 } } },
+      xScale: { title: { display: true, text: 'Year', color: COLOR.axisColor, font: { size: 11 } } },
     }),
   });
 }
@@ -158,7 +158,7 @@ function initNDVIDist() {
       labels: UHI_DATA.ndviBins.map(b => b.toFixed(1)),
       datasets: [
         {
-          label: 'Urbano',
+          label: 'Urban',
           data: UHI_DATA.ndviUrban,
           backgroundColor: 'rgba(211,47,47,0.55)',
           borderColor: COLOR.heatExtreme,
@@ -166,7 +166,7 @@ function initNDVIDist() {
           borderRadius: 3,
         },
         {
-          label: 'Bosques',
+          label: 'Forests',
           data: UHI_DATA.ndviForest,
           backgroundColor: 'rgba(102,187,106,0.55)',
           borderColor: COLOR.vegLight,
@@ -186,7 +186,7 @@ function initNDVIDist() {
         },
       },
       xScale: { title: { display: true, text: 'NDVI', color: COLOR.axisColor, font: { size: 11 } } },
-      yScale: { title: { display: true, text: 'Nº píxeles', color: COLOR.axisColor, font: { size: 11 } } },
+      yScale: { title: { display: true, text: 'No. pixels', color: COLOR.axisColor, font: { size: 11 } } },
     }),
   });
 }
@@ -223,7 +223,7 @@ function initADRF() {
           fill: false, tension: 0.4,
         },
         {
-          label: 'ADRF causal',
+          label: 'Causal ADRF',
           data: g.map((x, i) => ({ x, y: aVal[i] })),
           borderColor: COLOR.vegLight,
           borderWidth: 2.5,
@@ -262,7 +262,7 @@ function initLovePlot() {
       labels: confounders,
       datasets: [
         {
-          label: 'Observacional',
+          label: 'Observational',
           data: rObs,
           backgroundColor: rObs.map(v => v > 0.10 ? 'rgba(211,47,47,0.65)' : 'rgba(102,187,106,0.55)'),
           borderColor:      rObs.map(v => v > 0.10 ? COLOR.heatExtreme     : COLOR.vegLight),
@@ -299,7 +299,7 @@ function initLovePlot() {
           min: 0, max: 0.6,
           grid: { color: COLOR.gridLine },
           ticks: { color: COLOR.axisColor, font: { size: 9 } },
-          title: { display: true, text: '|Correlación|', color: COLOR.axisColor, font: { size: 10 } },
+          title: { display: true, text: '|Correlation|', color: COLOR.axisColor, font: { size: 10 } },
         },
         y: {
           grid: { display: false },
@@ -339,7 +339,7 @@ function initMarginal() {
           tension: 0.4,
         },
         {
-          label: 'Cero',
+          label: 'Zero',
           data: g.map(x => ({ x, y: 0 })),
           borderColor: 'rgba(255,255,255,0.1)',
           borderWidth: 1,
@@ -376,22 +376,22 @@ function initDAG() {
 
   // Nodos del DAG GPS
   const nodes = [
-    { id: 'X',    label: 'Confusores\n(X)',       x: mid,     y: 60,  color: COLOR.heatUrban,  r: 38 },
+    { id: 'X',    label: 'Confounders\n(X)',       x: mid,     y: 60,  color: COLOR.heatUrban,  r: 38 },
     { id: 'GPS',  label: 'GPS\nf(T|X)',            x: mid-160, y: 180, color: COLOR.neutral,    r: 34 },
-    { id: 'T',    label: 'NDVI\n(Tratamiento)',    x: mid-80,  y: 300, color: COLOR.vegLight,   r: 38 },
-    { id: 'IPW',  label: 'Pesos\nIPW',             x: mid+80,  y: 210, color: COLOR.neutral,    r: 30 },
+    { id: 'T',    label: 'NDVI\n(Treatment)',    x: mid-80,  y: 300, color: COLOR.vegLight,   r: 38 },
+    { id: 'IPW',  label: 'Weights\nIPW',             x: mid+80,  y: 210, color: COLOR.neutral,    r: 30 },
     { id: 'Y',    label: 'LST °C\n(Outcome)',      x: mid+160, y: 320, color: '#EF9A9A',        r: 38 },
-    { id: 'ADRF', label: 'ADRF\nCausal',           x: mid+80,  y: 340, color: COLOR.vegDark,   r: 32 },
+    { id: 'ADRF', label: 'Causal\nADRF',           x: mid+80,  y: 340, color: COLOR.vegDark,   r: 32 },
   ];
 
   // Aristas
   const links = [
-    { s: 'X', t: 'GPS', label: 'estima' },
-    { s: 'X', t: 'T',   label: 'confunde' },
+    { s: 'X', t: 'GPS', label: 'estimates' },
+    { s: 'X', t: 'T',   label: 'confounds' },
     { s: 'X', t: 'Y',   label: '' },
-    { s: 'GPS', t: 'IPW', label: 'genera' },
-    { s: 'T', t: 'Y',   label: 'efecto\ncausal', highlight: true },
-    { s: 'IPW', t: 'ADRF', label: 'pesa' },
+    { s: 'GPS', t: 'IPW', label: 'generates' },
+    { s: 'T', t: 'Y',   label: 'causal\neffect', highlight: true },
+    { s: 'IPW', t: 'ADRF', label: 'weights' },
     { s: 'T', t: 'ADRF', label: '' },
     { s: 'Y', t: 'ADRF', label: '' },
   ];

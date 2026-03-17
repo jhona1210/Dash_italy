@@ -65,62 +65,62 @@ const SLIDES = [
     hasMap: false,
   },
 
-  // ── 5. Nuestra pregunta ───────────────────────────────────
+  // ── 5. Our Question ───────────────────────────────────
   {
     id: 5,
     key: 'question',
-    title: '¿Cuál es el efecto causal del NDVI sobre la LST?',
-    subtitle: 'Pregunta de investigación',
-    btnLabel: 'Ver metodología',
+    title: 'What is the causal effect of NDVI on LST?',
+    subtitle: 'Research Question',
+    btnLabel: 'See Methodology',
     btnTheme: 'theme--neutral',
     progressColor: 'linear-gradient(90deg, #D32F2F, #FDD835)',
-    eyebrow: 'Pregunta de investigación',
+    eyebrow: 'Research Question',
     layout: 'centered',
     chartInit: null,
     hasMap: false,
   },
 
-  // ── 6. Metodología GPS-IPW ───────────────────────────────
+  // ── 6. GPS-IPW Methodology ───────────────────────────────
   {
     id: 6,
     key: 'methodology',
     title: 'Generalized Propensity Score (GPS-IPW)',
-    subtitle: 'Metodología',
-    btnLabel: 'Ver resultados',
+    subtitle: 'Methodology',
+    btnLabel: 'See results',
     btnTheme: 'theme--neutral',
     progressColor: 'linear-gradient(90deg, #FDD835, #66BB6A)',
-    eyebrow: 'Metodología',
+    eyebrow: 'Methodology',
     layout: 'split-reverse',
-    // El DAG D3 se inicializa con ID especial
+    // The D3 DAG is initialized with a special ID
     chartInit: ['dag-d3-container'],
     hasMap: false,
   },
 
-  // ── 7. Resultados ────────────────────────────────────────
+  // ── 7. Results ────────────────────────────────────────
   {
     id: 7,
     key: 'results',
-    title: 'Efecto causal del verde urbano',
-    subtitle: 'Resultados',
-    btnLabel: 'Recomendaciones',
+    title: 'Causal Effect of Urban Greenery',
+    subtitle: 'Results',
+    btnLabel: 'Recommendations',
     btnTheme: 'theme--veg-light',
     progressColor: 'linear-gradient(90deg, #66BB6A, #2E7D32)',
-    eyebrow: 'Resultados',
+    eyebrow: 'Results',
     layout: 'results',
     chartInit: ['slide7_external'],
     hasMap: false,
   },
 
-  // ── 8. Recomendaciones ────────────────────────────────────
+  // ── 8. Recommendations ────────────────────────────────────
   {
     id: 8,
     key: 'policy',
-    title: '¿Dónde y cómo intervenir?',
-    subtitle: 'Recomendaciones de política',
-    btnLabel: 'Reiniciar',             // botón final
+    title: 'Where and how to intervene?',
+    subtitle: 'Policy Recommendations',
+    btnLabel: 'Restart',             // final button
     btnTheme: 'theme--veg-dark',
     progressColor: 'linear-gradient(90deg, #2E7D32, #1B5E20)',
-    eyebrow: 'Recomendaciones de política',
+    eyebrow: 'Policy Recommendations',
     layout: 'policy',
     chartInit: ['chart-marginal'],
     hasMap: false,
@@ -154,11 +154,11 @@ const UHI_DATA = {
     return (this.adrf(x + h) - this.adrf(x - h)) / (2 * h);
   },
 
-  // Love plot — confusores
+  // Love plot — confounders
   confounders: [
     'Building height', 'NTL', 'Pop. density',
-    'Dist. roads', 'Elevation', 'Dist. agua',
-    'Latitude', 'Longitude', 'Uso urbano', 'Uso bosques'
+    'Dist. roads', 'Elevation', 'Dist. water',
+    'Latitude', 'Longitude', 'Urban use', 'Forest use'
   ],
   rObs: [0.42, 0.39, 0.16, 0.16, 0.03, 0.06, 0.15, 0.03, 0.52, 0.29],
   rIPW: [0.07, 0.06, 0.04, 0.04, 0.03, 0.04, 0.05, 0.03, 0.08, 0.07],

@@ -450,12 +450,12 @@ function initMap() {
     const handleFSChange = () => {
       const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
       if (isFs) {
-        fullscreenBtn.setAttribute('title', 'Salir de pantalla completa');
-        fullscreenBtn.setAttribute('aria-label', 'Salir de pantalla completa');
+        fullscreenBtn.setAttribute('title', 'Exit fullscreen');
+        fullscreenBtn.setAttribute('aria-label', 'Exit fullscreen');
         fullscreenBtn.innerHTML = '<i data-lucide="minimize"></i>';
       } else {
-        fullscreenBtn.setAttribute('title', 'Pantalla completa');
-        fullscreenBtn.setAttribute('aria-label', 'Pantalla completa');
+        fullscreenBtn.setAttribute('title', 'Fullscreen');
+        fullscreenBtn.setAttribute('aria-label', 'Fullscreen');
         fullscreenBtn.innerHTML = '<i data-lucide="maximize"></i>';
       }
       if (window.lucide) window.lucide.createIcons({ root: fullscreenBtn });
@@ -618,7 +618,7 @@ function _showResetBtn() {
     btn = document.createElement('button');
     btn.id = 'map-reset-zoom';
     btn.className = 'map-reset-zoom-btn';
-    btn.innerHTML = '🗺 Ver Milán completo';
+    btn.innerHTML = '🗺 View full Milan';
     btn.addEventListener('click', () => {
       // Reset zoom to full city
       if (mapInstance && _milanBounds) {

@@ -51,7 +51,7 @@ function updateUI(index) {
 
   // Botón siguiente
   const isLast = index === TOTAL - 1;
-  elBtnText.textContent = isLast ? 'Reiniciar' : slide.btnLabel;
+  elBtnText.textContent = isLast ? 'Restart' : slide.btnLabel;
 
   // Remover todas las clases temáticas y asignar la correcta
   elBtnNext.className = `btn-next ${slide.btnTheme}`;
@@ -87,9 +87,9 @@ function updateUI(index) {
 
   // Preview del siguiente slide
   if (!isLast) {
-    elTitlePreview.textContent = `Siguiente: ${SLIDES[index + 1].subtitle}`;
+    elTitlePreview.textContent = `Next: ${SLIDES[index + 1].subtitle}`;
   } else {
-    elTitlePreview.textContent = 'Fin de la narrativa · Milán UHI 2021–2025';
+    elTitlePreview.textContent = 'End of narrative · Milan UHI 2021–2025';
   }
 
   // Animar contador
