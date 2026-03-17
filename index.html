@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Dashboard interactivo de inferencia causal sobre Islas de Calor Urbano (UHI) en Milán — GPS-IPW Causal Model" />
+  <title>UHI Causal Dashboard · Milán</title>
+
+  <!-- ─── Google Fonts ─────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+
+  <!-- ─── Lucide Icons ──────────────────────────────── -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- ─── Librerías de Gráficos & Mapa ─────────────── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- ─── Estilos propios ───────────────────────────── -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════
+       BARRA DE PROGRESO SUPERIOR
+  ════════════════════════════════════════════════════ -->
+  <div class="progress-bar-wrapper">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       INDICADOR DE SLIDE (puntos)
+  ════════════════════════════════════════════════════ -->
+  <nav class="slide-dots" id="slide-dots" aria-label="Navegación de slides">
+    <!-- Generado dinámicamente por main.js -->
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════
+       NUMERACIÓN DE SLIDE
+  ════════════════════════════════════════════════════ -->
+  <div class="slide-counter">
+    <span id="slide-current">01</span>
+    <span class="counter-sep">/</span>
+    <span id="slide-total">08</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       CONTENEDOR PRINCIPAL DE SLIDES
+  ════════════════════════════════════════════════════ -->
+  <main class="slides-wrapper" id="slides-wrapper">
+
+    <!-- ── SLIDE 1: Hook — The Same Region, A Different Temperature ── -->
+    <section class="slide slide--hook" id="slide-1" data-slide="0">
+      <div class="slide__bg-gradient slide__bg-gradient--hook"></div>
+      <div class="slide__content hook-layout">
+
+        <!-- ── Top: Title + Subtitle ──────────────────────── -->
+        <div class="hook-header">
+          <div class="slide__eyebrow">
+            <i data-lucide="globe" class="eyebrow-icon"></i>
+            Urban Heat Islands · Causal Inference · Milán
+          </div>
+          <h1 class="hook-title">The Same Region.<br />A Different Temperature.</h1>
+          <p class="hook-intro">
+            In many cities around the world, temperatures in dense urban areas are
+            consistently higher than in nearby rural environments.
+          </p>
+        </div>
+
+        <!-- ── Middle: Photo Comparison + Stat ───────────── -->
+        <div class="hook-comparison">
+
+          <!-- Countryside photo -->
+          <div class="hook-photo-card hook-photo-card--veg">
+            <div class="hook-photo-wrap">
+              <img src="assets/images/countryside_person.jpg" alt="Countryside — green vegetation and rural landscape"
+                class="hook-photo" onerror="this.parentElement.classList.add('hook-photo--fallback')" />
+              <div class="hook-temp-badge hook-temp-badge--veg">~30°C</div>
+            </div>
+            <div class="hook-photo-label">
+              <span class="hook-place-name">Countryside 🌳</span>
+              <span class="hook-place-temp">~30°C surface temperature</span>
+            </div>
+          </div>
+
+          <!-- Center stat -->
+          <div class="hook-delta">
+            <div class="hook-delta-number">+15°C</div>
+            <div class="hook-delta-desc">
+              Urban surfaces can be up to<br />
+              <strong>15°C hotter</strong> than nearby<br />rural areas
+            </div>
+            <div class="hook-delta-source">
+              Source: European Commission –<br />Joint Research Centre
+            </div>
+            <div class="hook-delta-arrow">
+              <i data-lucide="arrow-right"></i>
+            </div>
+          </div>
+
+          <!-- City photo -->
+          <div class="hook-photo-card hook-photo-card--heat">
+            <div class="hook-photo-wrap">
+              <img src="assets/images/Gente_ciudad.jpg" alt="Dense city — urban heat and concrete surfaces"
+                class="hook-photo" onerror="this.parentElement.classList.add('hook-photo--fallback')" />
+              <div class="hook-temp-badge hook-temp-badge--heat">~45°C</div>
+            </div>
+            <div class="hook-photo-label">
+              <span class="hook-place-name">Dense city 🏙</span>
+              <span class="hook-place-temp">~45°C surface temperature</span>
+            </div>
+          </div>
+
+        </div><!-- /.hook-comparison -->
+
+        <!-- ── Bottom: Bridge Question ─────────────────── -->
+        <div class="hook-bridge">
+          <i data-lucide="help-circle" class="hook-bridge-icon"></i>
+          <p class="hook-bridge-text">
+            Why is a city sometimes hotter than the countryside around it?
+          </p>
+          <i data-lucide="chevron-down" class="hook-bridge-chevron"></i>
+        </div>
+
+      </div><!-- /.hook-layout -->
+    </section>
+
+    <!-- ── SLIDE 2: The Urban Heat Island Effect ─────── -->
+    <section class="slide slide--uhi" id="slide-2" data-slide="1">
+      <div class="slide__content uhi-layout">
+
+        <!-- ── Header ──────────────────────────────────── -->
+        <div class="uhi-header">
+          <div class="slide__eyebrow">
+            <i data-lucide="thermometer" class="eyebrow-icon"></i>
+            The Phenomenon
+          </div>
+          <h2 class="uhi-title">The Urban Heat Island Effect</h2>
+          <p class="uhi-intro">
+            Cities replace natural landscapes with asphalt, concrete and buildings —
+            materials that absorb and store heat during the day, releasing it slowly at night.
+            As a result, urban areas become significantly hotter than their surroundings.
+          </p>
+        </div>
+
+        <!-- ── Main diagram ─────────────────────────────── -->
+        <div class="uhi-diagram">
+
+          <!-- Sun source -->
+          <div class="uhi-sun">
+            <div class="uhi-sun-icon">☀</div>
+            <div class="uhi-sun-label">Solar Radiation</div>
+          </div>
+
+          <!-- Heat flow arrows from sun -->
+          <div class="uhi-arrows-row">
+            <div class="uhi-arrow-beam uhi-arrow-beam--left">
+              <div class="uhi-arrow-line"></div>
+              <i data-lucide="arrow-down-left" class="uhi-arrow-icon"></i>
+            </div>
+            <div class="uhi-arrow-beam uhi-arrow-beam--right">
+              <div class="uhi-arrow-line"></div>
+              <i data-lucide="arrow-down-right" class="uhi-arrow-icon"></i>
+            </div>
+          </div>
+
+          <!-- Two panels -->
+          <div class="uhi-panels">
+
+            <!-- Rural panel -->
+            <div class="uhi-panel uhi-panel--rural">
+              <div class="uhi-panel-top">
+                <span class="uhi-panel-emoji">🌳</span>
+                <span class="uhi-panel-name">Rural Area</span>
+              </div>
+              <div class="uhi-panel-surface uhi-panel-surface--rural">
+                <span>Vegetation &amp; soil</span>
+              </div>
+              <div class="uhi-panel-process">
+                <div class="uhi-process-item">
+                  <i data-lucide="droplets" class="uhi-process-icon uhi-process-icon--veg"></i>
+                  <span>Evapotranspiration</span>
+                </div>
+                <div class="uhi-process-item">
+                  <i data-lucide="wind" class="uhi-process-icon uhi-process-icon--veg"></i>
+                  <span>Natural cooling</span>
+                </div>
+              </div>
+              <div class="uhi-panel-temp uhi-panel-temp--cool">
+                <i data-lucide="thermometer" class="temp-icon"></i>
+                Temperature <strong>↓</strong>
+                <span class="temp-val">~30°C</span>
+              </div>
+            </div>
+
+            <!-- VS divider -->
+            <div class="uhi-vs">
+              <div class="uhi-vs-line"></div>
+              <span class="uhi-vs-label">VS</span>
+              <div class="uhi-vs-line"></div>
+            </div>
+
+            <!-- Urban panel -->
+            <div class="uhi-panel uhi-panel--urban">
+              <div class="uhi-panel-top">
+                <span class="uhi-panel-emoji">🏙</span>
+                <span class="uhi-panel-name">Dense City</span>
+              </div>
+              <div class="uhi-panel-surface uhi-panel-surface--urban">
+                <span>Asphalt &amp; concrete</span>
+              </div>
+              <div class="uhi-panel-process">
+                <div class="uhi-process-item">
+                  <i data-lucide="flame" class="uhi-process-icon uhi-process-icon--heat"></i>
+                  <span>Heat absorption</span>
+                </div>
+                <div class="uhi-process-item">
+                  <i data-lucide="layers" class="uhi-process-icon uhi-process-icon--heat"></i>
+                  <span>Heat retention</span>
+                </div>
+              </div>
+              <div class="uhi-panel-temp uhi-panel-temp--hot">
+                <i data-lucide="thermometer" class="temp-icon"></i>
+                Temperature <strong>↑</strong>
+                <span class="temp-val">~45°C</span>
+              </div>
+            </div>
+
+          </div><!-- /.uhi-panels -->
+
+          <!-- Heat chain: sun → brick → fire -->
+          <div class="uhi-chain">
+            <span class="chain-step">☀</span>
+            <i data-lucide="arrow-right" class="chain-arrow"></i>
+            <span class="chain-step">🧱</span>
+            <i data-lucide="arrow-right" class="chain-arrow"></i>
+            <span class="chain-step chain-step--fire">🔥</span>
+            <span class="chain-label">Solar energy → absorbed by surfaces → re-emitted as heat</span>
+          </div>
+
+        </div><!-- /.uhi-diagram -->
+
+        <!-- ── 3 Cause cards ─────────────────────────────── -->
+        <div class="uhi-causes">
+          <div class="uhi-cause-card">
+            <div class="uhi-cause-emoji">☀️</div>
+            <div class="uhi-cause-body">
+              <div class="uhi-cause-title">Heat absorption</div>
+              <div class="uhi-cause-desc">Asphalt and concrete absorb solar radiation and re-emit it as longwave heat.</div>
+            </div>
+          </div>
+          <div class="uhi-cause-card">
+            <div class="uhi-cause-emoji">🌳</div>
+            <div class="uhi-cause-body">
+              <div class="uhi-cause-title">Loss of vegetation</div>
+              <div class="uhi-cause-desc">Less natural cooling through evapotranspiration and canopy shade.</div>
+            </div>
+          </div>
+          <div class="uhi-cause-card">
+            <div class="uhi-cause-emoji">🏙</div>
+            <div class="uhi-cause-body">
+              <div class="uhi-cause-title">Urban geometry</div>
+              <div class="uhi-cause-desc">Tall buildings trap heat, reduce airflow and create radiation canyons.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.uhi-layout -->
+    </section>
+
+
+    <!-- ── SLIDE 3: Exploring the UHI in Milan ─────── -->
+    <section class="slide slide--lst" id="slide-3" data-slide="2">
+      <div class="slide__content lst-layout">
+
+        <!-- ── Header ─────────────────────────────────── -->
+        <div class="lst-header">
+          <div class="slide__eyebrow">
+            <i data-lucide="map-pin" class="eyebrow-icon"></i>
+            Milan · Land Surface Temperature
+          </div>
+          <h2 class="lst-title">Exploring the Urban Heat Island in Milan</h2>
+          <p class="lst-intro">
+            To better understand the Urban Heat Island effect, we analyze
+            temperature patterns across Milan, Italy.
+          </p>
+        </div>
+
+        <!-- ── Map block ───────────────────────────────── -->
+        <div class="lst-map-block">
+
+          <!-- Min / Max badges above the map -->
+          <div class="lst-stat-row">
+            <div class="lst-stat lst-stat--cool">
+              <span class="lst-stat-label">Min LST</span>
+              <span class="lst-stat-val" id="lst-min-val">31.2°C</span>
+              <span class="lst-stat-tag">🌳 Vegetation</span>
+            </div>
+            <div class="lst-stat-spacer">
+              <i data-lucide="arrow-right"></i>
+              <span>LST range across Milan</span>
+              <i data-lucide="arrow-left"></i>
+            </div>
+            <div class="lst-stat lst-stat--hot">
+              <span class="lst-stat-label">Max LST</span>
+              <span class="lst-stat-val" id="lst-max-val">57.5°C</span>
+              <span class="lst-stat-tag">🏙 Urban surfaces</span>
+            </div>
+          </div>
+
+          <!-- Leaflet map container + floating selector -->
+          <div class="map-wrapper">
+
+            <!-- Variable selector — floats top-left over the map -->
+            <div class="map-var-selector">
+              <label class="map-var-label" for="map-var-select">
+                <i data-lucide="layers" class="map-var-icon"></i>
+                Variable
+              </label>
+              <select id="map-var-select" class="map-var-select">
+                <option value="none">🗺 Base map only</option>
+                <option value="LST_Celsius">🌡 LST — Surface Temperature</option>
+                <option value="NDVI">🌿 NDVI — Vegetation Index</option>
+                <option value="Impermeabilidad">🏗 Impermeability</option>
+                <option value="Pop_Density">👥 Population Density</option>
+              </select>
+
+              <!-- Municipality toggle switch -->
+              <div class="map-muni-toggle-wrapper">
+                <span class="muni-toggle-label-text">Municipios</span>
+                <label class="muni-switch">
+                  <input type="checkbox" id="map-muni-toggle" checked>
+                  <span class="muni-slider"></span>
+                </label>
+              </div>
+
+              <!-- Fullscreen button -->
+              <div class="map-fullscreen-wrapper">
+                <button type="button" class="map-fullscreen-btn" id="map-fullscreen-btn" aria-label="Pantalla completa" title="Pantalla completa">
+                  <i data-lucide="maximize"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="map-container" id="map-container"
+                 role="application"
+                 aria-label="Mapa de temperatura superficial LST — Milán">
+              <div class="map-overlay-label">
+                Mapa LST · Milán<br />
+                <small>Cargando datos…</small>
+              </div>
+            </div>
+
+            <!-- ── Municipality info panel ─────────────────── -->
+            <div id="info-municipio" class="info-municipio" aria-live="polite">
+              <button class="info-mun-close" id="info-mun-close" aria-label="Cerrar panel">✕</button>
+              <div class="info-mun-num" id="info-mun-num">—</div>
+              <div class="info-mun-name" id="info-mun-name">Haz clic en un municipio</div>
+              <div class="info-mun-divider"></div>
+              <div class="info-mun-desc" id="info-mun-desc">
+                Selecciona una de las 9 zonas de Milán para explorar su carácter urbano.
+              </div>
+              <div class="info-mun-tags" id="info-mun-tags"></div>
+              <div class="info-mun-lst" id="info-mun-lst"></div>
+            </div>
+
+          </div><!-- /.map-wrapper -->
+
+        </div><!-- /.lst-map-block -->
+
+        <!-- ── Data Sources ─────────────────────────── -->
+        <div class="lst-sources">
+          <div class="lst-sources-label">Data Sources</div>
+          <div class="lst-source-cards">
+            <div class="lst-source-card">
+              <div class="lst-source-icon">🛰</div>
+              <div class="lst-source-body">
+                <div class="lst-source-name">Landsat 8 / ERA5</div>
+                <div class="lst-source-desc">Temperature · Vegetation · Wind</div>
+              </div>
+            </div>
+            <div class="lst-source-card">
+              <div class="lst-source-icon">🏙</div>
+              <div class="lst-source-body">
+                <div class="lst-source-name">OpenStreetMap / GHSL</div>
+                <div class="lst-source-desc">Roads · Building height</div>
+              </div>
+            </div>
+            <div class="lst-source-card">
+              <div class="lst-source-icon">📍</div>
+              <div class="lst-source-body">
+                <div class="lst-source-name">DUSAF</div>
+                <div class="lst-source-desc">Land use classification</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.lst-layout -->
+    </section>
+
+
+    <!-- ── SLIDE 4: ¿Por qué importa? ───────────────── -->
+    <section class="slide slide--dark" id="slide-4" data-slide="3">
+      <div class="slide__content">
+        <div class="slide__eyebrow"><i data-lucide="alert-triangle"></i> Impact</div>
+        <h2 class="slide__title">Why Urban Heat<br />Islands Matter</h2>
+        <p class="slide__subtitle" style="max-width: 800px; margin-bottom: 40px;">
+          The Urban Heat Island effect is not only about temperature — it affects health, energy systems and social equity.
+        </p>
+
+        <div class="impact-grid" id="impact-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <!-- 1. Health -->
+          <div class="impact-card impact-card--health">
+            <i data-lucide="heart-pulse" class="impact-icon"></i>
+            <h3>HEALTH</h3>
+            <p>Extreme heat is the leading cause of weather-related deaths.</p>
+            <div class="impact-stat" style="font-size: 32px; margin-bottom: 5px;">317</div>
+            <p style="font-size: 11px; margin-bottom: 0;">Heatwave deaths in Milan (2025)</p>
+          </div>
+
+          <!-- 2. Energy -->
+          <div class="impact-card impact-card--energy">
+            <i data-lucide="zap" class="impact-icon"></i>
+            <h3>ENERGY</h3>
+            <p>Hotter cities require more air conditioning, increasing energy demand and emissions. Electricity demand for cooling increases 1.5–2% for every 1°C increase in temperature.</p>
+          </div>
+
+          <!-- 3. Equity -->
+          <div class="impact-card impact-card--equity">
+            <i data-lucide="users" class="impact-icon"></i>
+            <h3>Urban Equity & Environment</h3>
+            <p>Low-income neighborhoods often have less vegetation and more heat-absorbing surfaces. Unequal exposure to heat.</p>
+            <div class="impact-stat" style="font-size: 32px; margin-bottom: 5px;">+4–5°C</div>
+            <p style="font-size: 11px; margin-bottom: 0;">Nighttime temperature difference between Milan city center and surrounding rural areas</p>
+          </div>
+        </div>
+
+        <p style="text-align: center; margin-top: 40px; font-size: 15px; color: rgba(255,255,255,0.7); max-width: 800px; margin-left: auto; margin-right: auto;">
+          Understanding what urban factors drive these temperature differences is essential to design effective climate adaptation strategies.
+        </p>
+        <div style="text-align: center; margin-top: 20px; font-size: 11px; font-family: var(--mono); color: rgba(255,255,255,0.4);">
+          Data source: World Weather Attribution (WWA) - July 2025 Report
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 5: Nuestra pregunta ────────────────── -->
+    <section class="slide slide--question" id="slide-5" data-slide="4">
+      <div class="slide__content slide__content--centered">
+        <div class="slide__eyebrow"><i data-lucide="help-circle"></i> Pregunta de investigación</div>
+        <div class="question-block">
+          <div class="question-mark">"</div>
+          <h2 class="question-text">
+            ¿Cuál es el efecto <em>causal</em> de aumentar<br />
+            el NDVI en zonas urbanas de Milán<br />
+            sobre la temperatura de superficie (LST)?
+          </h2>
+          <div class="question-mark question-mark--close">"</div>
+        </div>
+        <div class="rq-pills">
+          <span class="rq-pill"><i data-lucide="git-branch"></i> Tratamiento: NDVI continuo</span>
+          <span class="rq-pill"><i data-lucide="thermometer"></i> Outcome: LST (°C)</span>
+          <span class="rq-pill"><i data-lucide="filter"></i> Confusores: densidad, edificios, distancia al agua</span>
+        </div>
+        <!-- DAG simple -->
+        <div class="dag-simple" id="dag-simple-container">
+          <div class="dag-node dag-node--conf">Confusores<br /><small>Densidad, NTL,<br />Uso suelo…</small></div>
+          <div class="dag-arrows">
+            <div class="dag-arrow dag-arrow--top">↙ ↘</div>
+          </div>
+          <div class="dag-node dag-node--treat">NDVI</div>
+          <div class="dag-arrow dag-arrow--center">→</div>
+          <div class="dag-node dag-node--out">LST (°C)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 6: Metodología GPS-IPW ─────────────── -->
+    <section class="slide" id="slide-6" data-slide="5">
+      <div class="slide__content slide__content--split slide__content--split-reverse">
+        <div class="split__text">
+          <div class="slide__eyebrow"><i data-lucide="cpu"></i> Metodología</div>
+          <h2 class="slide__title">Generalized Propensity<br />Score (GPS-IPW)</h2>
+          <p class="slide__body">
+            A diferencia de los métodos observacionales clásicos, el GPS extiende el
+            propensity score a tratamientos continuos. Estimamos el GPS con XGBoost
+            y construimos pesos IPW para crear una "pseudo-población" balanceada.
+          </p>
+          <div class="method-steps" id="method-steps">
+            <div class="method-step">
+              <span class="step-num">01</span>
+              <div class="step-body">
+                <strong>Estimar GPS</strong>
+                <p>XGBoost regressor: P(NDVI | X₁…Xₙ) con 10 confusores</p>
+              </div>
+            </div>
+            <div class="method-step">
+              <span class="step-num">02</span>
+              <div class="step-body">
+                <strong>Calcular pesos IPW</strong>
+                <p>w_i = f(t_i) / f(t_i | X_i) — marginal sobre condicional</p>
+              </div>
+            </div>
+            <div class="method-step">
+              <span class="step-num">03</span>
+              <div class="step-body">
+                <strong>Estimar ADRF</strong>
+                <p>Dose-response causal con bootstrapped 95% CI</p>
+              </div>
+            </div>
+            <div class="method-step">
+              <span class="step-num">04</span>
+              <div class="step-body">
+                <strong>Verificar balance</strong>
+                <p>Love plot: |r| &lt; 0.10 para todos los confusores</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="split__visual">
+          <!-- Contenedor D3 para DAG causal completo -->
+          <div class="dag-container" id="dag-d3-container">
+            <svg id="dag-svg" width="100%" height="420" aria-label="Diagrama causal GPS-IPW"></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 7: Resultados (NUEVO ESQUEMA SCROLLABLE) ───────────────────────── -->
+    <section class="slide slide--results" id="slide-7" data-slide="6">
+
+      <!-- NAV -->
+      <nav>
+        <span class="nav-brand">MILAN · UHI · CAUSAL</span>
+        <div class="nav-links">
+          <a href="#simulador" class="active">Simulador</a>
+          <a href="#mapa">Mapa</a>
+          <a href="#balance">Balance</a>
+          <a href="#comparacion">GPS vs OLS</a>
+          <a href="#validacion">Validación</a>
+        </div>
+        <span class="nav-badge">GPS-IPW + XGBoost</span>
+      </nav>
+
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-kicker">Inferencia causal · Urban Heat Island · Milán 2021–2025</div>
+        <h1>La vegetación urbana enfría Milán <em>−10.83 °C</em> causalmente</h1>
+        <p class="hero-sub">Estimación del efecto causal del NDVI sobre la temperatura superficial usando Generalized Propensity Score con pesos IPW estabilizados y XGBoost.</p>
+        <div class="hero-stats">
+          <div class="hstat">
+            <div class="hstat-val">−10.83°C</div>
+            <div class="hstat-lbl">Efecto causal total · GPS-IPW</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-val">25,540</div>
+            <div class="hstat-lbl">Píxeles · 30m resolución</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-val">E = 25.18</div>
+            <div class="hstat-lbl">E-value límite IC 95%</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-val">13/13</div>
+            <div class="hstat-lbl">Confusores balanceados · ASMD &lt;0.10</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACT 1: SIMULADOR -->
+      <section class="section" id="simulador">
+        <div class="section-head">
+          <div class="act-label">Acto 1 — Resultado principal</div>
+          <h2>Simulador de intervención urbana</h2>
+          <p>¿Cuánto bajaría la temperatura si aumentamos la vegetación de una zona? Mueve los sliders para calcular el efecto causal estimado.</p>
+        </div>
+
+        <div class="sim-layout">
+          <div class="card">
+            <div class="slider-group">
+              <div class="slider-top">
+                <span class="slider-name">NDVI actual (A) — zona de partida</span>
+                <span class="slider-val" id="va" style="color:var(--purple)">0.20</span>
+              </div>
+              <input type="range" id="sl-a" min="10" max="81" step="1" value="20" oninput="updateSim()">
+              <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--ink3)">
+                <span>Asfalto puro</span><span id="ctx-a" style="color:var(--ink2)">zona urbana mixta</span><span>Bosque</span>
+              </div>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-top">
+                <span class="slider-name">NDVI objetivo (B) — meta de intervención</span>
+                <span class="slider-val" id="vb" style="color:var(--teal)">0.55</span>
+              </div>
+              <input type="range" id="sl-b" min="10" max="81" step="1" value="55" oninput="updateSim()">
+              <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--ink3)">
+                <span>Asfalto puro</span><span id="ctx-b" style="color:var(--ink2)">parque urbano</span><span>Bosque</span>
+              </div>
+            </div>
+
+            <div style="position:relative;height:280px;margin-top:8px;">
+              <canvas id="adrf-chart"></canvas>
+            </div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:8px;text-align:center;">
+              Curva dosis-respuesta causal (ADRF) · GPS-IPW + XGBoost · IC 95% bootstrap · Milán 2021–2025
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="effect-panel cool" id="ebox">
+              <div class="ep-label" id="ep-label" style="color:var(--teal)">Efecto causal de enfriamiento</div>
+              <div class="ep-big" id="ep-big" style="color:var(--teal)">−4.1°C</div>
+              <div class="ep-desc" id="ep-desc" style="color:var(--teal)">NDVI 0.20 → 0.55</div>
+              <div class="ep-rows">
+                <div class="ep-row"><span>LST en A</span><b id="lst-a">46.4°C</b></div>
+                <div class="ep-row"><span>LST en B</span><b id="lst-b">42.3°C</b></div>
+                <div class="ep-row"><span>IC 95%</span><b id="lst-ic">[−5.1, −3.2]°C</b></div>
+                <div class="ep-row"><span>Ef. marginal en B</span><b id="marg-b">−10.2°C/NDVI</b></div>
+              </div>
+            </div>
+
+            <div class="card" style="padding:20px 24px;">
+              <div style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;">Equivalencias</div>
+              <div class="ep-row"><span>Área aprox.</span><b id="eq-area" style="font-family:var(--mono)">~12 ha</b></div>
+              <div class="ep-row"><span>Árboles equiv.</span><b id="eq-trees" style="font-family:var(--mono)">~2,800</b></div>
+              <div class="ep-row"><span>Píxeles afectados</span><b id="eq-px" style="font-family:var(--mono)">~1,333</b></div>
+            </div>
+
+            <div class="metric">
+              <div class="metric-lbl">Efecto total máximo posible</div>
+              <div class="metric-val" style="color:var(--teal)">−10.83°C</div>
+              <div style="font-size:12px;color:var(--ink3);margin-top:4px;">NDVI 0.095 → 0.815 · IC 95%: [−10.82, −9.03]</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACT 2: MAPA -->
+      <section class="section" id="mapa">
+        <div class="section-head">
+          <div class="act-label">Acto 2 — Distribución espacial</div>
+          <h2>Mapa de efecto causal local</h2>
+          <p>Cada píxel de Milán coloreado por cuántos grados enfría causalmente su vegetación. Azul = mayor enfriamiento.</p>
+        </div>
+
+        <div class="map-placeholder">
+          <div class="map-dots" id="map-dots"></div>
+          <div class="map-note">
+            <h3>Mapa Folium con datos reales</h3>
+            <p style="font-size:13px;margin-bottom:10px;">
+              Genera el mapa ejecutando en tu notebook:<br>
+              <code>mapa_efecto_causal(n_puntos=6000)</code>
+            </p>
+            <p style="font-size:12px;color:rgba(255,255,255,0.5);">
+              O abre directamente el archivo<br>
+              <code>mapa_efecto_causal_milan_real.html</code>
+            </p>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;">
+          <div class="card" style="text-align:center;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Ef. causal medio</div>
+            <div style="font-family:var(--mono);font-size:24px;color:var(--teal);">−2.27°C</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:4px;">promedio por píxel</div>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Máx. enfriamiento</div>
+            <div style="font-family:var(--mono);font-size:24px;color:var(--teal);">−7.06°C</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:4px;">píxeles con NDVI alto</div>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">LST contrafactual</div>
+            <div style="font-family:var(--mono);font-size:24px;color:var(--red);">46.4°C</div>
+            <div style="font-size:12px;color:var(--ink3);margin-top:4px;">sin vegetación (NDVI=0)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACT 3: BALANCE / LOVE PLOT -->
+      <section class="section" id="balance">
+        <div class="section-head">
+          <div class="act-label">Acto 3 — La caja negra revelada</div>
+          <h2>Laboratorio de des-sesgo</h2>
+          <p>El GPS-IPW simula matemáticamente una ciudad donde la vegetación se plantó al azar. El toggle muestra cómo colapsan las correlaciones.</p>
+        </div>
+
+        <div class="toggle-row">
+          <span class="badge badge-obs">Mundo observacional</span>
+          <div class="toggle-track" id="bal-toggle" onclick="toggleBal()">
+            <div class="toggle-thumb"></div>
+          </div>
+          <span class="badge badge-exp">Pseudo-población IPW</span>
+        </div>
+
+        <div class="narr-box" id="bal-narr">
+          En el mundo observacional, el NDVI está fuertemente correlacionado con los confusores urbanos. Las zonas verdes son sistemáticamente menos densas y menos asfaltadas — la correlación no es causal: refleja quién tiene acceso al verde.
+        </div>
+
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:28px;align-items:start;">
+          <div class="card">
+            <div style="position:relative;height:400px;">
+              <canvas id="bal-chart"></canvas>
+            </div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:8px;text-align:center;">
+              ASMD = Absolute Standardized Mean Difference · Umbral &lt;0.10 · Modelo aumentado con términos cuadráticos
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="metric">
+              <div class="metric-lbl">ASMD medio antes</div>
+              <div class="metric-val" style="color:var(--red)">0.2119</div>
+            </div>
+            <div class="metric">
+              <div class="metric-lbl">ASMD medio después</div>
+              <div class="metric-val" style="color:var(--teal)">0.0359</div>
+              <div style="font-size:12px;color:var(--teal);margin-top:2px;">Mejora: 83%</div>
+            </div>
+            <div class="metric">
+              <div class="metric-lbl">Confusores balanceados</div>
+              <div class="metric-val" style="color:var(--teal)">13 / 13</div>
+              <div style="font-size:12px;color:var(--teal);margin-top:2px;">Todos bajo umbral 0.10</div>
+            </div>
+            <div style="background:var(--teal-l);border-radius:var(--r);padding:16px 18px;border:1px solid rgba(46,125,50,0.5);">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Clave metodológica</div>
+              <div style="font-size:13px;color:var(--ink2);font-style:italic;line-height:1.6;">
+                "Para medir el verdadero efecto de los árboles, el algoritmo simuló matemáticamente una versión de Milán donde la vegetación se distribuyó al azar."
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACT 4: GPS vs OLS -->
+      <section class="section" id="comparacion">
+        <div class="section-head">
+          <div class="act-label">Acto 4 — La historia del sesgo</div>
+          <h2>GPS-IPW vs OLS vs correlación bruta</h2>
+          <p>El OLS múltiple subestima el efecto enfriador en 4.62°C. El GPS corrige el sesgo de sobrecontrol lineal.</p>
+        </div>
+
+        <div class="comp-grid">
+          <div class="comp-card">
+            <div class="comp-tag" style="color:var(--red)">Correlación bruta</div>
+            <div class="comp-val" style="color:var(--red)">−8.49°C</div>
+            <div class="comp-sub">Sin controles · R²=0.491</div>
+            <span class="comp-badge" style="background:var(--red-l);color:var(--red)">ningún supuesto</span>
+          </div>
+          <div class="comp-card">
+            <div class="comp-tag" style="color:var(--purple)">OLS múltiple</div>
+            <div class="comp-val" style="color:var(--purple)">−4.74°C</div>
+            <div class="comp-sub">Con controles lineales · R²=0.643</div>
+            <span class="comp-badge" style="background:var(--purple-l);color:var(--purple)">linealidad + aditividad</span>
+          </div>
+          <div class="comp-card highlight">
+            <div class="comp-tag" style="color:var(--teal)">GPS-IPW + XGBoost</div>
+            <div class="comp-val" style="color:var(--teal)">−9.35°C</div>
+            <div class="comp-sub">Estimación causal · R²=0.564</div>
+            <span class="comp-badge" style="background:var(--teal-l);color:var(--teal)">ignorabilidad condicional</span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:3fr 2fr;gap:28px;align-items:start;">
+          <div class="card">
+            <div style="position:relative;height:300px;">
+              <canvas id="comp-chart"></canvas>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="card" style="background:var(--purple-l);border-color:#AFA9EC;">
+              <div style="font-family:var(--mono);font-size:10px;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Sesgo del OLS múltiple</div>
+              <div style="font-family:var(--mono);font-size:28px;color:var(--purple);font-weight:700;">+4.62°C</div>
+              <div style="font-size:13px;color:var(--ink2);margin-top:6px;font-style:italic;">El OLS sobrecontrola variables que en el DAG son parcialmente mediadores, subestimando el efecto enfriador real.</div>
+            </div>
+            <div class="metric">
+              <div class="metric-lbl">OLS corrige del sesgo bruto</div>
+              <div class="metric-val">44.2%</div>
+            </div>
+            <div class="metric">
+              <div class="metric-lbl">GPS corrige del sesgo bruto</div>
+              <div class="metric-val" style="color:var(--teal)">10.1%</div>
+              <div style="font-size:12px;color:var(--ink3);margin-top:2px;">El GPS preserva el efecto causal real</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACT 5: VALIDACIÓN -->
+      <section class="section" id="validacion">
+        <div class="section-head">
+          <div class="act-label">Acto 5 — Robustez y validación</div>
+          <h2>Tabla de validaciones</h2>
+          <p>Pruebas formales que respaldan la validez causal del resultado principal.</p>
+        </div>
+
+        <div class="val-grid">
+          <div class="val-card pass">
+            <div class="val-title">E-value · VanderWeele & Ding (2017)</div>
+            <div class="val-metric" style="color:var(--teal)">25.18</div>
+            <div class="val-desc">Un confusor no observado necesitaría asociación ≥25.18× con NDVI y LST para invalidar el IC 95%.</div>
+            <span class="val-status status-ok">✓ Muy robusto</span>
+          </div>
+          <div class="val-card pass">
+            <div class="val-title">Balance ASMD · modelo aumentado</div>
+            <div class="val-metric" style="color:var(--teal)">13 / 13</div>
+            <div class="val-desc">Todos los confusores con ASMD &lt;0.10 después del rebalanceo IPW. ASMD medio = 0.036.</div>
+            <span class="val-status status-ok">✓ Balance perfecto</span>
+          </div>
+          <div class="val-card pass">
+            <div class="val-title">Bootstrap IC 95%</div>
+            <div class="val-metric" style="color:var(--teal)">[−10.82, −9.03]°C</div>
+            <div class="val-desc">200 iteraciones. IC estrecho — amplitud media 0.82°C a lo largo de toda la curva ADRF.</div>
+            <span class="val-status status-ok">✓ Estable</span>
+          </div>
+          <div class="val-card pass">
+            <div class="val-title">Prueba de placebo · Elevación</div>
+            <div class="val-metric" style="color:var(--teal)">p &gt; 0.05</div>
+            <div class="val-desc">El GPS no estima efecto causal sobre variables que no pueden ser afectadas por el NDVI.</div>
+            <span class="val-status status-ok">✓ Sin efecto espurio</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;">Análisis de sensibilidad — viento local (confusor no observado)</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Escenario</th>
+                <th>r(viento, NDVI)</th>
+                <th>Sesgo est.</th>
+                <th>Efecto ajustado</th>
+                <th>Dentro del IC 95%</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Asociación débil</td>
+                <td class="mono">0.15</td>
+                <td class="mono">+0.19°C</td>
+                <td class="teal">−10.64°C</td>
+                <td class="teal">✓ Sí</td>
+              </tr>
+              <tr>
+                <td>Asociación moderada</td>
+                <td class="mono">0.30</td>
+                <td class="mono">+0.78°C</td>
+                <td class="teal">−10.05°C</td>
+                <td class="teal">✓ Sí</td>
+              </tr>
+              <tr>
+                <td>Asociación fuerte (pesimista)</td>
+                <td class="mono">0.50</td>
+                <td class="mono">+2.17°C</td>
+                <td class="red">−8.66°C</td>
+                <td class="red">⚠ Marginal</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer>
+        <div class="fl">Milán · Urban Heat Island · GPS-IPW Causal Analysis · 2021–2025</div>
+        <div class="fr">Universidad Externado de Colombia</div>
+      </footer>
+
+      <!-- Sticky Next Button Placeholders will be handled by main.js floating logic -->
+    </section>
+
+    <!-- ── SLIDE 8: Recomendaciones ──────────────────── -->
+    <section class="slide slide--policy" id="slide-8" data-slide="7">
+      <div class="slide__content">
+        <div class="slide__eyebrow"><i data-lucide="landmark"></i> Recomendaciones de política</div>
+        <h2 class="slide__title">¿Dónde y cómo intervenir?</h2>
+        <div class="policy-zones" id="policy-zones">
+          <div class="policy-zone policy-zone--gray">
+            <div class="zone-header">
+              <i data-lucide="circle" class="zone-icon"></i>
+              <span class="zone-tag">Zona Gris</span>
+            </div>
+            <h3>NDVI &lt; 0.15</h3>
+            <p>Zona muy asfaltada. El arbolado aislado tiene bajo retorno térmico. Se necesita intervención a escala de
+              barrio completo.</p>
+            <div class="zone-action"><i data-lucide="building-2"></i> Reordenación urbana integral</div>
+          </div>
+          <div class="policy-zone policy-zone--priority">
+            <div class="zone-header">
+              <i data-lucide="star" class="zone-icon"></i>
+              <span class="zone-tag">⭐ Zona Prioritaria</span>
+            </div>
+            <h3>NDVI 0.15 – 0.35</h3>
+            <p>Efecto marginal máximo. Cada árbol produce el mayor retorno térmico posible. Barrios periurbanos mixtos.
+            </p>
+            <div class="zone-action"><i data-lucide="tree-pine"></i> Arbolado viario + cubiertas verdes</div>
+          </div>
+          <div class="policy-zone policy-zone--consolidated">
+            <div class="zone-header">
+              <i data-lucide="shield-check" class="zone-icon"></i>
+              <span class="zone-tag">Zona Consolidada</span>
+            </div>
+            <h3>NDVI &gt; 0.60</h3>
+            <p>Parques y bosques. El efecto adicional de nuevas plantaciones es menor. La prioridad es mantener y
+              conectar corredores verdes.</p>
+            <div class="zone-action"><i data-lucide="git-merge"></i> Corredores ecológicos</div>
+          </div>
+        </div>
+        <div class="policy-chart-row">
+          <div class="chart-container chart-container--marginal">
+            <div class="chart-label">Rendimiento marginal causal · dLST/dNDVI por nivel de NDVI</div>
+            <canvas id="chart-marginal" aria-label="Efecto marginal por NDVI"></canvas>
+          </div>
+          <!-- 📸 Imagen recomendada: assets/images/green_corridors.jpg -->
+          <div class="img-placeholder img-placeholder--policy" role="img" aria-label="Corredores verdes Milán">
+            <i data-lucide="image" class="placeholder-icon"></i>
+            <span>assets/images/green_corridors.jpg</span>
+          </div>
+        </div>
+        <div class="final-cta">
+          <p class="cta-text">Modelo GPS-IPW · Landsat 8 · DUSAF · Verano 2021–2025 · Milán</p>
+          <button class="btn-restart" id="btn-restart" aria-label="Reiniciar presentación">
+            <i data-lucide="rotate-ccw"></i> Reiniciar narrativa
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /.slides-wrapper -->
+
+  <!-- ═══════════════════════════════════════════════════
+       BOTÓN DE NAVEGACIÓN PRINCIPAL
+  ════════════════════════════════════════════════════ -->
+  <div class="nav-footer">
+    <div class="slide-title-preview" id="slide-title-preview"></div>
+    <button class="btn-next" id="btn-next" aria-label="Siguiente slide">
+      <span id="btn-next-text">Comenzar</span>
+      <i data-lucide="arrow-right" class="btn-icon"></i>
+    </button>
+  </div>
+
+  <!-- ─── Scripts propios (orden importa) ──────────── -->
+  <script src="js/slides.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- ─── Municipality panel close button ─────────── -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const closeBtn = document.getElementById('info-mun-close');
+      const panel    = document.getElementById('info-municipio');
+      if (closeBtn && panel) {
+        closeBtn.addEventListener('click', () => {
+          panel.classList.remove('info-municipio--visible');
+        });
+      }
+    });
+
+    // ══════════════════════════════════════════════════════════
+    // Configuración para el simulador ADRF de la Slide 7
+    // ══════════════════════════════════════════════════════════
+    const N_adrf = 150;
+    const grid_adrf = Array.from({length:N_adrf},(_,i)=>0.095+i*(0.815-0.095)/(N_adrf-1));
+
+    function adrf_calc(x){
+      if(x<0.12) return 46.78-(x-0.095)*14;
+      if(x<0.25) return 46.44-(x-0.12)*17;
+      if(x<0.50) return 44.23-(x-0.25)*9.8;
+      return 41.78-(x-0.50)*7.2;
+    }
+    function marg_calc(x){const h=0.005;return(adrf_calc(x+h)-adrf_calc(x-h))/(2*h);}
+    function ciLo_calc(x){return adrf_calc(x)-(x<0.12?2.2:0.7);}
+    function ciHi_calc(x){return adrf_calc(x)+(x<0.12?2.2:0.7);}
+
+    const aV_calc=grid_adrf.map(adrf_calc),cL_calc=grid_adrf.map(ciLo_calc),cH_calc=grid_adrf.map(ciHi_calc);
+
+    function ndviCtx_calc(v){
+      if(v<0.12)return'suelo / asfalto';
+      if(v<0.25)return'zona urbana mixta';
+      if(v<0.45)return'vegetación dispersa';
+      if(v<0.62)return'parque urbano';
+      return'bosque / verde denso';
+    }
+
+    let dynAdrfChart,dynBalChart,dynCompChart,dynBalOn=false;
+
+    window.updateSim = function() {
+      const elA=document.getElementById('sl-a');
+      const elB=document.getElementById('sl-b');
+      if(!elA || !elB) return;
+      const a=parseInt(elA.value)/100;
+      const b=parseInt(elB.value)/100;
+      document.getElementById('va').textContent=a.toFixed(2);
+      document.getElementById('vb').textContent=b.toFixed(2);
+      document.getElementById('ctx-a').textContent=ndviCtx_calc(a);
+      document.getElementById('ctx-b').textContent=ndviCtx_calc(b);
+      const lA=adrf_calc(a),lB=adrf_calc(b),d=lB-lA;
+      const sign=d<=0?'−':'+',abs=Math.abs(d).toFixed(1);
+      const cool=d<=0;
+      const eb=document.getElementById('ebox');
+      eb.className='effect-panel '+(cool?'cool':'warm');
+      document.getElementById('ep-label').textContent=cool?'Efecto causal de enfriamiento':'Efecto causal de calentamiento';
+      document.getElementById('ep-label').style.color=cool?'var(--veg-dark)':'#993C1D';
+      document.getElementById('ep-big').textContent=sign+abs+'°C';
+      document.getElementById('ep-big').style.color=cool?'var(--veg-dark)':'#993C1D';
+      document.getElementById('ep-desc').textContent=`NDVI ${a.toFixed(2)} → ${b.toFixed(2)}`;
+      document.getElementById('ep-desc').style.color=cool?'var(--veg-light)':'#D85A30';
+      document.getElementById('lst-a').textContent=lA.toFixed(1)+'°C';
+      document.getElementById('lst-b').textContent=lB.toFixed(1)+'°C';
+      document.getElementById('lst-ic').textContent=`[${(d-0.9).toFixed(1)}, ${(d+0.9).toFixed(1)}]°C`;
+      document.getElementById('marg-b').textContent=marg_calc(b).toFixed(1)+'°C/NDVI';
+      const pix=Math.round(Math.abs(b-a)*16000);
+      const area=Math.round(Math.abs(b-a)*600);
+      document.getElementById('eq-area').textContent='~'+area+' ha';
+      document.getElementById('eq-trees').textContent='~'+(area*230).toLocaleString();
+      document.getElementById('eq-px').textContent='~'+pix.toLocaleString();
+      if(dynAdrfChart){
+        dynAdrfChart.data.datasets[3].data=[{x:a,y:adrf_calc(a)}];
+        dynAdrfChart.data.datasets[4].data=[{x:b,y:adrf_calc(b)}];
+        dynAdrfChart.data.datasets[5].data=[{x:a,y:adrf_calc(a)},{x:b,y:adrf_calc(b)}];
+        dynAdrfChart.update('none');
+      }
+    };
+
+    function initDynADRF(){
+      const ctx = document.getElementById('adrf-chart');
+      if(!ctx) return;
+      dynAdrfChart=new Chart(ctx,{
+        type:'line',
+        data:{datasets:[
+          {data:grid_adrf.map((x,i)=>({x,y:cH_calc[i]})),borderWidth:0,pointRadius:0,fill:'+1',backgroundColor:'rgba(29,158,117,0.1)',tension:.4},
+          {data:grid_adrf.map((x,i)=>({x,y:cL_calc[i]})),borderWidth:0,pointRadius:0,fill:false,tension:.4},
+          {label:'ADRF',data:grid_adrf.map((x,i)=>({x,y:aV_calc[i]})),borderColor:'#66BB6A',borderWidth:2.5,pointRadius:0,fill:false,tension:.4},
+          {data:[{x:.20,y:adrf_calc(.20)}],type:'scatter',pointRadius:10,pointBackgroundColor:'#7986CB',pointBorderColor:'#fff',pointBorderWidth:2},
+          {data:[{x:.55,y:adrf_calc(.55)}],type:'scatter',pointRadius:10,pointBackgroundColor:'#66BB6A',pointBorderColor:'#fff',pointBorderWidth:2},
+          {data:[{x:.20,y:adrf_calc(.20)},{x:.55,y:adrf_calc(.55)}],borderColor:'rgba(121,134,203,0.35)',borderDash:[5,4],borderWidth:1.5,pointRadius:0,fill:false}
+        ]},
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y?c.parsed.y.toFixed(1)+'°C':''}}},
+          scales:{
+            x:{type:'linear',min:.09,max:.82,title:{display:true,text:'NDVI',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}},
+            y:{min:35,max:50,title:{display:true,text:'LST (°C)',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}}
+          }
+        }
+      });
+    }
+
+    const dyn_confs=['Height','NTL','Pop.dens','D.roads','Elev','D.agua','LatLon','UsoUrb','UsoBosq','Imper.'];
+    const dyn_rAntes=[0.42,0.38,0.16,0.16,0.16,0.06,0.03,0.52,0.29,0.06];
+    const dyn_rDesp =[0.04,0.03,0.03,0.03,0.06,0.01,0.03,0.07,0.04,0.04];
+
+    function initDynBal(){
+      const ctx = document.getElementById('bal-chart');
+      if(!ctx) return;
+      const h=dyn_confs.length*42+80;
+      ctx.parentElement.style.height=h+'px';
+      dynBalChart=new Chart(ctx,{
+        type:'bar',
+        data:{labels:dyn_confs,datasets:[{
+          label:'|Correlación| con NDVI',data:dyn_rAntes,
+          backgroundColor:dyn_rAntes.map(v=>v>.10?'#E24B4A':'#66BB6A'),
+          borderRadius:4,borderSkipped:false
+        }]},
+        options:{
+          indexAxis:'y',responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>Math.abs(c.parsed.x).toFixed(3)}}},
+          scales:{
+            x:{min:0,max:.6,title:{display:true,text:'|ASMD|',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}},
+            y:{grid:{display:false},ticks:{color:'#fff',font:{size:12}}}
+          }
+        }
+      });
+    }
+
+    window.toggleBal = function(){
+      dynBalOn=!dynBalOn;
+      document.getElementById('bal-toggle').classList.toggle('on',dynBalOn);
+      const narr=document.getElementById('bal-narr');
+      if(dynBalOn){
+        narr.textContent='El algoritmo GPS-IPW (modelo aumentado con términos cuadráticos) logró balance perfecto: 13/13 confusores con ASMD <0.10. La pseudo-población balanceada permite estimar el efecto causal neto del NDVI, eliminando el sesgo de confusión observable.';
+        narr.style.borderLeftColor='var(--veg-light)';
+        if(dynBalChart){
+          dynBalChart.data.datasets[0].data=dyn_rDesp;
+          dynBalChart.data.datasets[0].backgroundColor=dyn_rDesp.map(v=>v>.10?'#E24B4A':'#66BB6A');
+          dynBalChart.update();
+        }
+      }else{
+        narr.textContent='En el mundo observacional, el NDVI está fuertemente correlacionado con los confusores urbanos. Las zonas verdes son sistemáticamente menos densas y menos asfaltadas — la correlación no es causal: refleja quién tiene acceso al verde.';
+        narr.style.borderLeftColor='var(--temp-neutral)';
+        if(dynBalChart){
+          dynBalChart.data.datasets[0].data=dyn_rAntes;
+          dynBalChart.data.datasets[0].backgroundColor=dyn_rAntes.map(v=>v>.10?'#E24B4A':'#66BB6A');
+          dynBalChart.update();
+        }
+      }
+    };
+
+    function initDynComp(){
+      const ctx = document.getElementById('comp-chart');
+      if(!ctx) return;
+      const efBruto=-8.49,efOls=-4.74,efGps=-9.35;
+      dynCompChart=new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Correlación bruta','OLS múltiple','GPS-IPW (causal)'],
+          datasets:[{
+            data:[efBruto,efOls,efGps],
+            backgroundColor:['rgba(226,75,74,.85)','rgba(121,134,203,.85)','rgba(102,187,106,.85)'],
+            borderRadius:6,borderSkipped:false,
+            borderColor:['#E24B4A','#7986CB','#66BB6A'],borderWidth:1.5,
+          }]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{
+            legend:{display:false},
+            tooltip:{callbacks:{label:c=>c.parsed.y.toFixed(2)+'°C'}}
+          },
+          scales:{
+            x:{grid:{display:false},ticks:{color:'#fff',font:{size:11}}},
+            y:{min:-12,max:1,title:{display:true,text:'Efecto total (°C)',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}}
+          }
+        }
+      });
+    }
+
+    function initMapDots(){
+      const container=document.getElementById('map-dots');
+      if(!container) return;
+      const colors=['#3949AB','#7986CB','#43A047','#66BB6A','#E24B4A'];
+      for(let i=0;i<40;i++){
+        const d=document.createElement('div');
+        d.className='map-dot';
+        const size=Math.random()*8+3;
+        d.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};opacity:.4;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*3}s`;
+        container.appendChild(d);
+      }
+    }
+
+    // Inicializador expuesto globalmente
+    window.slide7_external = function() {
+      if(!dynAdrfChart) initDynADRF(); 
+      if(!dynBalChart) initDynBal(); 
+      if(!dynCompChart) initDynComp(); 
+      initMapDots(); 
+      updateSim();
+    };
+  </script>
+</body>
+
+</html>

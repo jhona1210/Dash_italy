@@ -1,0 +1,6 @@
+test-fullscreen.js
+test-html.js
+.DS_Store
+node_modules/
+.env
+EOF
