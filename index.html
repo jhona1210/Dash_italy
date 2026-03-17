@@ -329,10 +329,24 @@
               </label>
               <select id="map-var-select" class="map-var-select">
                 <option value="none">🗺 Base map only</option>
-                <option value="LST_Celsius">🌡 LST — Surface Temperature</option>
-                <option value="NDVI">🌿 NDVI — Vegetation Index</option>
-                <option value="Impermeabilidad">🏗 Impermeability</option>
-                <option value="Pop_Density">👥 Population Density</option>
+                <optgroup label="Core Indicators">
+                  <option value="LST_Celsius">🌡 LST — Temperature</option>
+                  <option value="NDVI">🌿 NDVI — Vegetation</option>
+                  <option value="Impermeabilidad">🏗 Impermeability</option>
+                  <option value="Pop_Density">👥 Population Density</option>
+                </optgroup>
+                <optgroup label="Environmental Indices">
+                  <option value="NDBI">🏗 NDBI — Built-up</option>
+                  <option value="NDWI">💧 NDWI — Water Index</option>
+                  <option value="BSI">🏜 BSI — Bare Soil</option>
+                  <option value="Soil_Moisture">💧 Soil Moisture</option>
+                  <option value="Albedo">⚪ Albedo — Reflectivity</option>
+                </optgroup>
+                <optgroup label="Urban Fabric & Wind">
+                  <option value="SVF">🏙 SVF — Sky View Factor</option>
+                  <option value="FAR">🏢 FAR — Build Ratio</option>
+                  <option value="Wind_Speed">🌬 Wind Speed</option>
+                </optgroup>
               </select>
 
               <!-- Municipality toggle switch -->

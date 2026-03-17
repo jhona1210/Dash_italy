@@ -25,8 +25,9 @@ const VAR_CONFIG = {
   LST_Celsius: {
     label: 'LST — Surface Temperature',
     unit:  '°C',
-    format: v => v.toFixed(2) + ' °C',
+    format: v => parseFloat(v).toFixed(2) + ' °C',
     colorFn: (v) => {
+      v = parseFloat(v);
       if (v < 35) return '#66BB6A';
       if (v < 40) return '#FDD835';
       if (v < 45) return '#FB8C00';
@@ -45,14 +46,15 @@ const VAR_CONFIG = {
   NDVI: {
     label: 'NDVI — Vegetation Index',
     unit:  '',
-    format: v => v.toFixed(3),
+    format: v => parseFloat(v).toFixed(3),
     colorFn: (v) => {
+      v = parseFloat(v);
       if (v < 0.1) return '#F5F5DC';   // bare / imperv.
       if (v < 0.2) return '#FDD835';   // very sparse
       if (v < 0.35) return '#A5D6A7';  // sparse
       if (v < 0.55) return '#4CAF50';  // moderate
       if (v < 0.7)  return '#388E3C';  // dense
-      return               '#1B5E20';  // very dense (#2E7D32 palette)
+      return               '#1B5E20';  // very dense
     },
     legend: [
       { label: '< 0.10  · Impervious / Bare',  color: '#F5F5DC' },
@@ -67,8 +69,9 @@ const VAR_CONFIG = {
   Impermeabilidad: {
     label: 'Impermeability — Sealed soil',
     unit:  '%',
-    format: v => (v * 100).toFixed(1) + '%',
+    format: v => (parseFloat(v) * 100).toFixed(1) + '%',
     colorFn: (v) => {
+      v = parseFloat(v);
       if (v < 0.1)  return '#66BB6A';  // permeable (veg.)
       if (v < 0.25) return '#FDD835';
       if (v < 0.45) return '#FB8C00';
@@ -87,8 +90,9 @@ const VAR_CONFIG = {
   Pop_Density: {
     label: 'Population Density',
     unit:  'inh/km²',
-    format: v => v.toFixed(0) + ' inh/km²',
+    format: v => parseFloat(v).toFixed(0) + ' inh/km²',
     colorFn: (v) => {
+      v = parseFloat(v);
       if (v < 5)   return '#212121';   // depopulated
       if (v < 20)  return '#455A64';
       if (v < 50)  return '#7986CB';
@@ -101,6 +105,148 @@ const VAR_CONFIG = {
       { label: '20–50   · Low',          color: '#7986CB' },
       { label: '50–90   · Medium',       color: '#9575CD' },
       { label: '> 90    · High density', color: '#CE93D8' },
+    ],
+  },
+
+  NDBI: {
+    label: 'NDBI — Built-up Index',
+    unit:  '',
+    format: v => parseFloat(v).toFixed(3),
+    colorFn: (v) => {
+      v = parseFloat(v);
+      if (v < -0.1) return '#A5D6A7';
+      if (v < 0.1)  return '#E0E0E0';
+      if (v < 0.3)  return '#9E9E9E';
+      return               '#424242';
+    },
+    legend: [
+      { label: '< -0.1 · Vegetation / Water', color: '#A5D6A7' },
+      { label: '(-0.1, 0.1) · Sparse Built',  color: '#E0E0E0' },
+      { label: '0.1-0.3 · Built-up',          color: '#9E9E9E' },
+      { label: '> 0.3 · High density built', color: '#424242' },
+    ],
+  },
+
+  NDWI: {
+    label: 'NDWI — Water Index',
+    unit:  '',
+    format: v => parseFloat(v).toFixed(3),
+    colorFn: (v) => {
+      v = parseFloat(v);
+      if (v < -0.3) return '#FDD835';
+      if (v < 0.0)  return '#4CAF50';
+      return               '#1976D2';
+    },
+    legend: [
+      { label: '< -0.3 · Dry surfaces', color: '#FDD835' },
+      { label: '(-0.3, 0) · Vegetation', color: '#4CAF50' },
+      { label: '> 0 · Water content',    color: '#1976D2' },
+    ],
+  },
+
+  BSI: {
+    label: 'BSI — Bare Soil Index',
+    unit:  '',
+    format: v => parseFloat(v).toFixed(3),
+    colorFn: (v) => {
+      v = parseFloat(v);
+      if (v < 0) return '#4CAF50';
+      if (v < 0.05) return '#D7CCC8';
+      return '#8D6E63';
+    },
+    legend: [
+      { label: '< 0 · Vegetation',     color: '#4CAF50' },
+      { label: '0-0.05 · Sparse soil', color: '#D7CCC8' },
+      { label: '> 0.05 · Bare soil',   color: '#8D6E63' },
+    ],
+  },
+
+  Albedo: {
+    label: 'Albedo — Reflectivity',
+    unit:  '',
+    format: v => parseFloat(v).toFixed(3),
+    colorFn: (v) => {
+      v = parseFloat(v);
+      if (v < 0.1)  return '#212121';
+      if (v < 0.2)  return '#616161';
+      if (v < 0.3)  return '#BDBDBD';
+      return               '#EEEEEE';
+    },
+    legend: [
+      { label: '< 0.1 · Low (Asphalt)',  color: '#212121' },
+      { label: '0.1-0.2 · Medium',       color: '#616161' },
+      { label: '0.2-0.3 · High',         color: '#BDBDBD' },
+      { label: '> 0.3 · Very High',      color: '#EEEEEE' },
+    ],
+  },
+
+  SVF: {
+    label: 'SVF — Sky View Factor',
+    unit:  '',
+    format: v => parseFloat(v).toFixed(3),
+    colorFn: (v) => {
+      v = parseFloat(v);
+      if (v < 0.5) return '#424242';
+      if (v < 0.8) return '#9E9E9E';
+      return              '#E0E0E0';
+    },
+    legend: [
+      { label: '< 0.5 · Obstructed',    color: '#424242' },
+      { label: '0.5-0.8 · Partial',     color: '#9E9E9E' },
+      { label: '> 0.8 · Open sky',      color: '#E0E0E0' },
+    ],
+  },
+
+  FAR: {
+    label: 'FAR — Floor Area Ratio',
+    unit:  '',
+    format: v => parseFloat(v).toFixed(2),
+    colorFn: (v) => {
+      v = parseFloat(v);
+      if (v < 1)  return '#F5F5F5';
+      if (v < 3)  return '#BDBDBD';
+      if (v < 6)  return '#757575';
+      return              '#212121';
+    },
+    legend: [
+      { label: '< 1 · Low density',     color: '#F5F5F5' },
+      { label: '1-3 · Medium density',  color: '#BDBDBD' },
+      { label: '3-6 · High density',    color: '#757575' },
+      { label: '> 6 · Extremely dense', color: '#212121' },
+    ],
+  },
+
+  Soil_Moisture: {
+    label: 'Soil Moisture',
+    unit:  '',
+    format: v => parseFloat(v).toFixed(3),
+    colorFn: (v) => {
+      v = parseFloat(v);
+      if (v < 0.2) return '#D7CCC8';
+      if (v < 0.3) return '#81C784';
+      return              '#1976D2';
+    },
+    legend: [
+      { label: '< 0.2 · Dry',    color: '#D7CCC8' },
+      { label: '0.2-0.3 · Moise', color: '#81C784' },
+      { label: '> 0.3 · Wet',    color: '#1976D2' },
+    ],
+  },
+
+  Wind_Speed: {
+    label: 'Wind Speed',
+    unit:  'm/s',
+    format: v => parseFloat(v).toFixed(2) + ' m/s',
+    colorFn: (v) => {
+      v = parseFloat(v);
+      if (v < 1) return '#90A4AE';
+      if (v < 2) return '#4FC3F7';
+      return            '#0288D1';
+    },
+    legend: [
+      { label: '< 1 m/s · Low',    color: '#90A4AE' },
+      { label: '1-2 m/s · Medium', color: '#4FC3F7' },
+      { label: '> 2 m/s · High',   color: '#0288D1' },
     ],
   },
 };
@@ -201,33 +347,40 @@ function injectPopupStyles() {
 function buildPopup(p) {
   const cfg = VAR_CONFIG[currentVariable];
   const get = (key, fallback = '—') => {
-    const v = p[key];
-    return typeof v === 'number' ? v : fallback;
+    let v = p[key];
+    if (v === undefined || v === null) return fallback;
+    return typeof v === 'string' ? parseFloat(v) : v;
   };
 
   const lst  = get('LST_Celsius');
   const ndvi = get('NDVI');
   const imp  = get('Impermeabilidad');
   const pop  = get('Pop_Density');
+  const alb  = get('Albedo');
+  const ws   = get('Wind_Speed');
 
-  // Derive land use from one-hot columns
-  let uso = 'Mixed';
-  if (p.USO_DUSAF_Uso_Bosques_Naturaleza > 0.5) uso = '🌳 Forest / Nature';
-  else if (p.USO_DUSAF_Uso_Urbano_Artificial > 0.5) uso = '🏙 Urban / Artificial';
-  else if (p.USO_DUSAF_Uso_Agua > 0.5)             uso = '💧 Water';
-  else if (p.USO_DUSAF_Uso_Humedales > 0.5)        uso = '🌿 Wetlands';
+  // New categorical USO_DUSAF logic
+  const usoRaw = p.USO_DUSAF || 'Unknown';
+  const usoMap = {
+    'Uso_Urbano_Artificial': '🏙 Urban / Artificial',
+    'Uso_Agricola':         '🌾 Agriculture',
+    'Uso_Bosques_Naturaleza': '🌳 Forest / Nature',
+    'Uso_Agua':             '💧 Water',
+    'Uso_Humedales':        '🌿 Wetlands',
+  };
+  const uso = usoMap[usoRaw] || usoRaw.replace('Uso_', '').replace(/_/g, ' ');
 
   const row = (label, value, varKey, fmtFn, accent) => {
     const isActive = varKey === currentVariable;
     const color    = isActive ? (accent || '#FFF') : 'rgba(255,255,255,0.5)';
     const weight   = isActive ? '700' : '400';
-    const display  = typeof value === 'number' ? fmtFn(value) : value;
+    const display  = typeof value === 'number' && !isNaN(value) ? fmtFn(value) : value;
     return `
       <span style="color:rgba(255,255,255,0.45);font-size:10.5px">${label}</span>
       <span style="color:${color};font-weight:${weight};font-size:${isActive ? '12px' : '11px'}">${display}</span>`;
   };
 
-  const lstColor = typeof lst === 'number' ? VAR_CONFIG.LST_Celsius.colorFn(lst) : '#FFF';
+  const lstColor = typeof lst === 'number' && !isNaN(lst) ? VAR_CONFIG.LST_Celsius.colorFn(lst) : '#FFF';
 
   return `
     <div style="font-family:'Inter',sans-serif;min-width:210px;color:#FFF">
@@ -241,6 +394,8 @@ function buildPopup(p) {
         ${row('NDVI',           ndvi, 'NDVI',           v => v.toFixed(3), '#81C784')}
         ${row('Impermeab.',     imp,  'Impermeabilidad', v => (v*100).toFixed(1)+'%', '#FFB74D')}
         ${row('Pop. density',   pop,  'Pop_Density',    v => v.toFixed(0)+' inh/km²', '#BA68C8')}
+        ${row('Albedo',         alb,  'Albedo',         v => v.toFixed(3), '#EEEEEE')}
+        ${row('Wind Speed',     ws,   'Wind_Speed',     v => v.toFixed(2)+' m/s', '#0288D1')}
         <span style="color:rgba(255,255,255,0.45);font-size:10.5px">Land use</span>
         <span style="color:#FFF;font-size:11px">${uso}</span>
       </div>
@@ -302,8 +457,11 @@ function updateMapLayer(varKey) {
 
   // Re-style every existing circle marker (instant, no network)
   geojsonLayer.eachLayer(layer => {
-    const v = layer.feature?.properties?.[varKey];
-    if (typeof v !== 'number') return;
+    let v = layer.feature?.properties?.[varKey];
+    if (v === undefined || v === null) return;
+    v = parseFloat(v);
+    if (isNaN(v)) return;
+
     layer.setStyle({
       fillColor:   cfg.colorFn(v),
       fillOpacity: 0.82,
@@ -483,7 +641,7 @@ function initMap() {
   container.appendChild(loadingEl);
 
   /* ── Fetch GeoJSON ──────────────────────────────────── */
-  fetch('assets/data/milan_data.geojson')
+  fetch('assets/data/milan_final_data.geojson')
     .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
     .then(data => {
       loadingEl.remove();
@@ -493,10 +651,13 @@ function initMap() {
       /* Compute LST min/max for badges */
       let minLST = Infinity, maxLST = -Infinity;
       data.features.forEach(f => {
-        const v = f.properties?.LST_Celsius;
-        if (typeof v === 'number') {
-          if (v < minLST) minLST = v;
-          if (v > maxLST) maxLST = v;
+        let v = f.properties?.LST_Celsius;
+        if (v !== undefined && v !== null) {
+          v = parseFloat(v);
+          if (!isNaN(v)) {
+            if (v < minLST) minLST = v;
+            if (v > maxLST) maxLST = v;
+          }
         }
       });
       if (isFinite(minLST)) updateLSTBadges(minLST, maxLST);
@@ -504,7 +665,9 @@ function initMap() {
       /* Render layer */
       geojsonLayer = L.geoJSON(data, {
         pointToLayer: (feature, latlng) => {
-          const v = feature.properties?.[currentVariable] ?? 40;
+          let v = feature.properties?.[currentVariable] ?? 40;
+          v = parseFloat(v);
+          if (isNaN(v)) v = 40;
           return L.circleMarker(latlng, {
             radius:      4,
             fillColor:   cfg.colorFn(v),
@@ -518,14 +681,17 @@ function initMap() {
             className: 'lst-popup',
             maxWidth:  260,
           });
-          const v = feature.properties?.[currentVariable];
-          if (typeof v === 'number') {
-            lyr.bindTooltip(cfg.format(v), {
-              className: 'lst-tooltip',
-              direction: 'top',
-              offset:    [0, -6],
-              sticky:    true,
-            });
+          let v = feature.properties?.[currentVariable];
+          if (v !== undefined && v !== null) {
+            v = parseFloat(v);
+            if (!isNaN(v)) {
+              lyr.bindTooltip(cfg.format(v), {
+                className: 'lst-tooltip',
+                direction: 'top',
+                offset:    [0, -6],
+                sticky:    true,
+              });
+            }
           }
         },
       }).addTo(mapInstance);
@@ -602,8 +768,11 @@ function computeMuniAvg(bounds, varKey) {
   geojsonLayer.eachLayer(pt => {
     const ll = pt.getLatLng ? pt.getLatLng() : null;
     if (ll && bounds.contains(ll)) {
-      const v = pt.feature?.properties?.[varKey];
-      if (typeof v === 'number') { sum += v; count++; }
+      let v = pt.feature?.properties?.[varKey];
+      if (v !== undefined && v !== null) {
+        v = parseFloat(v);
+        if (!isNaN(v)) { sum += v; count++; }
+      }
     }
   });
   return count > 0 ? sum / count : NaN;
@@ -652,7 +821,7 @@ function _hideResetBtn() {
 ═══════════════════════════════════════════════════════ */
 function showMunicipiPanel(feature, bounds) {
   const props   = feature.properties || {};
-  const munId   = props.MUNICIPIO || props.municipio || props.NIL || props.ID ||
+  const munId   = props.municipio_id || props.MUNICIPIO || props.municipio || props.NIL || props.ID ||
                   props.id || props.num || props.numero || null;
   const munNum  = munId ? parseInt(munId, 10) : null;
   const data    = MUNICIPI_DATA[munNum] || null;
