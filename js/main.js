@@ -56,17 +56,25 @@ function updateUI(index) {
   // Remover todas las clases temáticas y asignar la correcta
   elBtnNext.className = `btn-next ${slide.btnTheme}`;
 
-  // Para Slide 7 (layout results scrollable), hacemos que nav-footer sea position:fixed
+  // Para Slide 7 (methodology scrollable) y Slide 8 (results scrollable), hacemos que nav-footer sea position:fixed
   const navFooter = document.querySelector('.nav-footer');
   if (navFooter) {
-    if (slide.key === 'results') {
+    if (slide.key === 'results' || slide.key === 'methodology') {
       navFooter.classList.add('nav-footer--sticky');
-      // Aseguramos que el main wrapper permita visualizarse encima del slide scrollable
       navFooter.style.position = 'fixed';
       navFooter.style.bottom = '24px';
       navFooter.style.right = '32px';
       navFooter.style.left = 'auto';
       navFooter.style.zIndex = '1000';
+      navFooter.style.background = 'rgba(10,12,16,0.85)';
+      navFooter.style.backdropFilter = 'blur(12px)';
+      navFooter.style.borderRadius = '50px';
+      navFooter.style.padding = '0 8px 0 24px';
+      navFooter.style.height = '56px';
+      navFooter.style.borderTop = 'none';
+      navFooter.style.border = '1px solid rgba(255,255,255,0.1)';
+      navFooter.style.boxShadow = '0 8px 32px rgba(0,0,0,0.5)';
+      navFooter.style.width = 'auto';
     } else {
       navFooter.classList.remove('nav-footer--sticky');
       navFooter.style.position = '';
@@ -74,6 +82,15 @@ function updateUI(index) {
       navFooter.style.right = '';
       navFooter.style.left = '';
       navFooter.style.zIndex = '';
+      navFooter.style.background = '';
+      navFooter.style.backdropFilter = '';
+      navFooter.style.borderRadius = '';
+      navFooter.style.padding = '';
+      navFooter.style.height = '';
+      navFooter.style.borderTop = '';
+      navFooter.style.border = '';
+      navFooter.style.boxShadow = '';
+      navFooter.style.width = '';
     }
   }
 

@@ -1507,3 +1507,393 @@ button   { cursor: pointer; border: none; font-family: var(--font); }
   box-shadow: 0 8px 32px rgba(0,0,0,0.6);
 }
 
+/* ══════════════════════════════════════════════════════════
+   SLIDE 7 — GPS-IPW METHODOLOGY (Scrollable Layout)
+══════════════════════════════════════════════════════════ */
+
+/* ── Override base slide for scrollable behavior ── */
+#slide-7.slide.slide--methodology {
+  overflow-y: auto;
+  max-height: 100vh;
+  display: block;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.slide--methodology {
+  background: linear-gradient(160deg, #0A0C10 0%, #0f1318 50%, #0A0C10 100%);
+}
+
+/* ── Minimal scrollbar ── */
+#slide-7::-webkit-scrollbar {
+  width: 5px;
+}
+#slide-7::-webkit-scrollbar-track {
+  background: transparent;
+}
+#slide-7::-webkit-scrollbar-thumb {
+  background: rgba(102,187,106,0.25);
+  border-radius: 4px;
+}
+#slide-7::-webkit-scrollbar-thumb:hover {
+  background: rgba(102,187,106,0.45);
+}
+
+/* ── Scroll content wrapper ── */
+.methodology-scroll-content {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 80px 48px 0;
+}
+
+/* ── Header ── */
+.meth-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* ── GPS Steps Grid (2×2) ── */
+.gps-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+/* ── Individual GPS Step Card ── */
+.gps-step-card {
+  position: relative;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 32px 28px 28px;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+/* Colored top border per card */
+.gps-step-card--1 { border-top: 3px solid #616161; }
+.gps-step-card--2 { border-top: 3px solid #FDD835; }
+.gps-step-card--3 { border-top: 3px solid #66BB6A; }
+.gps-step-card--4 { border-top: 3px solid #2E7D32; }
+
+/* Hover elevation effect */
+.gps-step-card:hover {
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.35);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.gps-step-card--1:hover { box-shadow: 0 16px 48px rgba(66,66,66,0.2); }
+.gps-step-card--2:hover { box-shadow: 0 16px 48px rgba(253,216,53,0.15); }
+.gps-step-card--3:hover { box-shadow: 0 16px 48px rgba(102,187,106,0.15); }
+.gps-step-card--4:hover { box-shadow: 0 16px 48px rgba(46,125,50,0.2); }
+
+/* ── Card top row: number + icon ── */
+.gps-step-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.gps-step-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+
+.gps-step-icon svg {
+  width: 28px;
+  height: 28px;
+  opacity: 0.7;
+  transition: opacity var(--t-mid), transform var(--t-mid);
+}
+.gps-step-card:hover .gps-step-icon svg {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ── Card title ── */
+.gps-step-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-h);
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+/* ── Formula label ── */
+.gps-step-formula {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  opacity: 0.85;
+}
+
+/* ── Content sections (Main Idea / Goal) ── */
+.gps-step-section {
+  margin-bottom: 14px;
+}
+.gps-step-section:last-child {
+  margin-bottom: 0;
+}
+
+.gps-step-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 6px;
+}
+
+.gps-step-section p {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.65;
+}
+
+/* ── Entry animations ── */
+.slide--active .meth-header { animation: fade-up 0.5s 0.1s both; }
+.slide--active .gps-step-card--1 { animation: fade-up 0.5s 0.15s both; }
+.slide--active .gps-step-card--2 { animation: fade-up 0.5s 0.25s both; }
+.slide--active .gps-step-card--3 { animation: fade-up 0.5s 0.35s both; }
+.slide--active .gps-step-card--4 { animation: fade-up 0.5s 0.45s both; }
+
+/* ── Responsive: 1 column on small screens ── */
+@media (max-width: 900px) {
+  .methodology-scroll-content {
+    padding: 60px 24px 0;
+  }
+  .gps-steps-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .gps-step-card {
+    padding: 24px 20px 22px;
+  }
+  .gps-step-title {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 600px) {
+  .methodology-scroll-content {
+    padding: 52px 16px 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 7 — DAG IMAGE SECTION
+══════════════════════════════════════════════════════════ */
+.dag-image-section {
+  margin-top: 48px;
+}
+
+.dag-image-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--veg-light);
+  margin-bottom: 20px;
+  padding-left: 4px;
+}
+
+.dag-image-label svg {
+  width: 16px;
+  height: 16px;
+}
+
+.dag-image-wrapper {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 32px;
+  transition: border-color var(--t-mid), box-shadow var(--t-mid);
+  overflow: hidden;
+}
+
+.dag-image-wrapper:hover {
+  border-color: rgba(102,187,106,0.3);
+  box-shadow: 0 8px 32px rgba(46,125,50,0.1);
+}
+
+.dag-full-image {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  filter: brightness(0.95);
+  transition: filter var(--t-mid);
+}
+
+.dag-image-wrapper:hover .dag-full-image {
+  filter: brightness(1);
+}
+
+.slide--active .dag-image-section {
+  animation: fade-up 0.55s 0.55s both;
+}
+
+@media (max-width: 900px) {
+  .dag-image-wrapper {
+    padding: 20px 16px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 8 — RESULTS: Additional Component Styles
+══════════════════════════════════════════════════════════ */
+
+/* ── Balance layout (chart + metrics side by side) ── */
+#slide-8 .bal-layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── slide-inner spacing ── */
+#slide-8 .slide-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Section titles ── */
+#slide-8 .slide-title {
+  font-family: var(--font);
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  color: var(--text-h);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+#slide-8 .slide-sub {
+  font-size: 15px;
+  color: var(--text-s);
+  max-width: 620px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+/* ── Pheno grid (Three Thermal Regimes) ── */
+#slide-8 .pheno-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+#slide-8 .pheno-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 20px;
+  transition: transform var(--t-mid), box-shadow var(--t-mid);
+}
+
+#slide-8 .pheno-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.3);
+}
+
+#slide-8 .pheno-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+#slide-8 .pheno-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-h);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+#slide-8 .pheno-range {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-s);
+  margin-bottom: 8px;
+}
+
+#slide-8 .pheno-val {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+#slide-8 .pheno-desc {
+  font-size: 13px;
+  color: var(--text-b);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+#slide-8 .pheno-bar-wrap {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+#slide-8 .pheno-bar {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--veg-light);
+  transition: width 0.8s ease;
+}
+
+/* ── Responsive results ── */
+@media (max-width: 900px) {
+  #slide-8 .bal-layout {
+    grid-template-columns: 1fr;
+  }
+  #slide-8 .sim-layout {
+    grid-template-columns: 1fr;
+  }
+  #slide-8 .pheno-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  #slide-8 .comp-grid {
+    grid-template-columns: 1fr;
+  }
+  #slide-8 .hero {
+    padding: 60px 24px 48px;
+  }
+  #slide-8 .hero-stats {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  #slide-8 .section {
+    padding: 48px 24px;
+  }
+  #slide-8 footer {
+    padding: 32px 24px 80px;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}

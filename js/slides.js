@@ -111,33 +111,18 @@ const SLIDES = [
     hasMap: false,
   },
 
-  // ── 8. Results ────────────────────────────────────────
+  // ── 8. Results (FINAL SLIDE) ────────────────────────────
   {
     id: 8,
     key: 'results',
     title: 'Causal Effect of Urban Greenery',
     subtitle: 'Results',
-    btnLabel: 'Recommendations',
-    btnTheme: 'theme--veg-light',
-    progressColor: 'linear-gradient(90deg, #66BB6A, #2E7D32)',
+    btnLabel: 'Restart',
+    btnTheme: 'theme--veg-dark',
+    progressColor: 'linear-gradient(90deg, #66BB6A, #1B5E20)',
     eyebrow: 'Results',
     layout: 'results',
     chartInit: ['initResultsDashboard'],
-    hasMap: false,
-  },
-
-  // ── 9. Recommendations ────────────────────────────────────
-  {
-    id: 9,
-    key: 'policy',
-    title: 'Where and how to intervene?',
-    subtitle: 'Policy Recommendations',
-    btnLabel: 'Restart',             // final button
-    btnTheme: 'theme--veg-dark',
-    progressColor: 'linear-gradient(90deg, #2E7D32, #1B5E20)',
-    eyebrow: 'Policy Recommendations',
-    layout: 'policy',
-    chartInit: ['chart-marginal'],
     hasMap: false,
   },
 ];
