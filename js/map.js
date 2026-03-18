@@ -485,6 +485,11 @@ function updateMapLayer(varKey) {
 
   // Refresh municipality panel metric for the new variable
   refreshPanelForCurrentVariable();
+
+  // Ensure boundaries stay on top
+  if (municipiLayer && mapInstance.hasLayer(municipiLayer)) {
+    municipiLayer.bringToFront();
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -550,7 +555,7 @@ function initMap() {
       if (showMuni) {
         if (municipiLayer && !mapInstance.hasLayer(municipiLayer)) {
           municipiLayer.addTo(mapInstance);
-          if (municipiLayer.bringToBack) municipiLayer.bringToBack();
+          if (municipiLayer.bringToFront) municipiLayer.bringToFront();
         } else if (!municipiLayer) {
           loadMunicipiLayer(mapInstance); // load if not loaded yet
         }
@@ -961,7 +966,7 @@ function loadMunicipiLayer(map) {
       const muniToggle = document.getElementById('map-muni-toggle');
       if (!muniToggle || muniToggle.checked) {
         municipiLayer.addTo(map);
-        if (municipiLayer.bringToBack) municipiLayer.bringToBack();
+        if (municipiLayer.bringToFront) municipiLayer.bringToFront();
       }
 
       console.log('[map.js] Municipi layer:', data.features?.length, 'polygons');
