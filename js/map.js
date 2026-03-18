@@ -635,13 +635,13 @@ function initMap() {
     background:rgba(10,12,14,0.7);z-index:500;pointer-events:none;`;
   loadingEl.innerHTML = `<div style="text-align:center">
     <div style="font-size:28px;margin-bottom:10px">🗺</div>
-    Loading 25,540 data points…
+    Loading 33,251 data points…
   </div>`;
   container.style.position = 'relative';
   container.appendChild(loadingEl);
 
   /* ── Fetch GeoJSON ──────────────────────────────────── */
-  fetch('assets/data/milan_final_data.geojson')
+  fetch('assets/data/milan_final2_sampled.geojson')
     .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
     .then(data => {
       loadingEl.remove();
