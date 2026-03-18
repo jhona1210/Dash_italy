@@ -26,7 +26,7 @@ const SLIDES = [
     key: 'phenomenon',
     title: '¿Qué es una Isla de Calor Urbano?',
     subtitle: 'El fenómeno',
-    btnLabel: 'See the evidence',
+    btnLabel: 'See the variables',
     btnTheme: 'theme--heat-urban',
     progressColor: 'linear-gradient(90deg, #FB8C00, #FDD835)',
     eyebrow: 'El Fenómeno',
@@ -35,24 +35,39 @@ const SLIDES = [
     hasMap: false,
   },
 
-  // ── 3. Evidencia / LST Map ─────────────────────────────────
+  // ── 3. Data Dictionary & Variables ────────────────────────
   {
     id: 3,
+    key: 'variables',
+    title: 'The Building Blocks: Our Variables',
+    subtitle: 'Data Dictionary',
+    btnLabel: 'See the evidence',
+    btnTheme: 'theme--neutral',
+    progressColor: 'linear-gradient(90deg, #FDD835, #FFEE58)',
+    eyebrow: 'Data Dictionary & Variables',
+    layout: 'variables',
+    chartInit: null,
+    hasMap: false,
+  },
+
+  // ── 4. Evidencia / LST Map ─────────────────────────────────
+  {
+    id: 4,
     key: 'evidence',
     title: 'Exploring the Urban Heat Island in Milan',
     subtitle: 'Land Surface Temperature',
     btnLabel: 'See the impact',
     btnTheme: 'theme--heat-urban',
-    progressColor: 'linear-gradient(90deg, #FDD835, #FB8C00)',
+    progressColor: 'linear-gradient(90deg, #FFEE58, #FB8C00)',
     eyebrow: 'Milan · Land Surface Temperature',
     layout: 'lst-map',
     chartInit: null,
     hasMap: true,                      // ← Leaflet LST map inicializa aquí
   },
 
-  // ── 4. ¿Por qué importa? ─────────────────────────────────
+  // ── 5. ¿Por qué importa? ─────────────────────────────────
   {
-    id: 4,
+    id: 5,
     key: 'impact',
     title: '¿Por qué importa más allá de la temperatura?',
     subtitle: 'Impacto',
@@ -65,9 +80,9 @@ const SLIDES = [
     hasMap: false,
   },
 
-  // ── 5. Our Question ───────────────────────────────────
+  // ── 6. Our Question ───────────────────────────────────
   {
-    id: 5,
+    id: 6,
     key: 'question',
     title: 'What is the causal effect of NDVI on LST?',
     subtitle: 'Research Question',
@@ -80,9 +95,9 @@ const SLIDES = [
     hasMap: false,
   },
 
-  // ── 6. GPS-IPW Methodology ───────────────────────────────
+  // ── 7. GPS-IPW Methodology ───────────────────────────────
   {
-    id: 6,
+    id: 7,
     key: 'methodology',
     title: 'Generalized Propensity Score (GPS-IPW)',
     subtitle: 'Methodology',
@@ -96,9 +111,9 @@ const SLIDES = [
     hasMap: false,
   },
 
-  // ── 7. Results ────────────────────────────────────────
+  // ── 8. Results ────────────────────────────────────────
   {
-    id: 7,
+    id: 8,
     key: 'results',
     title: 'Causal Effect of Urban Greenery',
     subtitle: 'Results',
@@ -107,13 +122,13 @@ const SLIDES = [
     progressColor: 'linear-gradient(90deg, #66BB6A, #2E7D32)',
     eyebrow: 'Results',
     layout: 'results',
-    chartInit: ['slide7_external'],
+    chartInit: ['initResultsDashboard'],
     hasMap: false,
   },
 
-  // ── 8. Recommendations ────────────────────────────────────
+  // ── 9. Recommendations ────────────────────────────────────
   {
-    id: 8,
+    id: 9,
     key: 'policy',
     title: 'Where and how to intervene?',
     subtitle: 'Policy Recommendations',
@@ -126,6 +141,119 @@ const SLIDES = [
     hasMap: false,
   },
 ];
+
+// Diccionario de datos para el Slide 3
+const VAR_DICTIONARY = {
+  // Category 1
+  municipio_id: {
+    title: 'municipio_id',
+    category: 'Identification & Location',
+    desc: 'District/neighborhood code of Milan. Obtained by rasterizing municipality polygons so every pixel knows its administrative zone.'
+  },
+  coords: {
+    title: 'longitude & latitude',
+    category: 'Identification & Location',
+    desc: 'Exact geographic coordinates for the center of each 30x30m pixel, generated via Google Earth Engine (GEE).'
+  },
+  geometry: {
+    title: 'geometry',
+    category: 'Identification & Location',
+    desc: 'Spatial point object allowing GIS software to recognize the dataset as a map.'
+  },
+  uso_dusaf: {
+    title: 'USO_DUSAF',
+    category: 'Identification & Location',
+    desc: "Official land use category (Urban, Agricultural, Forest). Obtained through a spatial join with Lombardy's DUSAF map."
+  },
+
+  // Category 2
+  ndvi: {
+    title: 'NDVI (Vegetation)',
+    category: "Satellite Indices (Earth's Signature)",
+    desc: 'Measures plant health by comparing red and near-infrared light.'
+  },
+  ndbi: {
+    title: 'NDBI (Urbanization)',
+    category: "Satellite Indices (Earth's Signature)",
+    desc: 'Highlights built-up areas (concrete/asphalt); the inverse of NDVI.'
+  },
+  ndwi: {
+    title: 'NDWI (Water)',
+    category: "Satellite Indices (Earth's Signature)",
+    desc: 'Detects moisture/water bodies; differentiates wet vs. dry soil.'
+  },
+  bsi: {
+    title: 'BSI (Bare Soil)',
+    category: "Satellite Indices (Earth's Signature)",
+    desc: 'Identifies areas without buildings or plants (vacant lots).'
+  },
+  albedo: {
+    title: 'Albedo',
+    category: "Satellite Indices (Earth's Signature)",
+    desc: 'Measures solar energy reflection. Low values (asphalt) absorb heat; high values reflect it.'
+  },
+
+  // Category 3
+  lst: {
+    title: 'LST_Celsius',
+    category: 'The Target Variable (Heat)',
+    desc: 'Land Surface Temperature. Collected via Landsat thermal sensors. This is our "effect" or target variable.'
+  },
+
+  // Category 4
+  dist_water: {
+    title: 'Dist_Water_m',
+    category: 'Environment & Climate',
+    desc: 'Distance to the nearest water body (rivers, lakes, canals).'
+  },
+  dist_road: {
+    title: 'Dist_Road_m',
+    category: 'Environment & Climate',
+    desc: 'Distance to the nearest major road to measure traffic-related heat.'
+  },
+  elevation: {
+    title: 'Elevation',
+    category: 'Environment & Climate',
+    desc: 'Height above sea level (NASA SRTM data).'
+  },
+  soil_moisture: {
+    title: 'Soil_Moisture',
+    category: 'Environment & Climate',
+    desc: 'Water content in the topsoil (ERA5-Land data).'
+  },
+  wind_speed: {
+    title: 'Wind_Speed',
+    category: 'Environment & Climate',
+    desc: 'Average summer wind speed; helps determine heat dispersal.'
+  },
+
+  // Category 5
+  ntl: {
+    title: 'NTL (Nighttime Lights)',
+    category: 'Urban & Human Factors',
+    desc: 'Intensity of city lights at night; proxy for economic activity.'
+  },
+  building_height: {
+    title: 'Building_Height',
+    category: 'Urban & Human Factors',
+    desc: 'Average building height per pixel (GHSL database).'
+  },
+  impermeabilidad: {
+    title: 'Impermeabilidad',
+    category: 'Urban & Human Factors',
+    desc: 'Percentage of sealed soil (concrete/asphalt).'
+  },
+  far: {
+    title: 'FAR (Floor Area Ratio)',
+    category: 'Urban & Human Factors',
+    desc: 'Building density; relationship between built area and land area.'
+  },
+  pop_density: {
+    title: 'Pop_Density',
+    category: 'Urban & Human Factors',
+    desc: 'Number of people living in the area (WorldPop 100m grids).'
+  }
+};
 
 // Datos estáticos reutilizables por charts.js
 const UHI_DATA = {
@@ -141,25 +269,35 @@ const UHI_DATA = {
   ndviUrban: [820, 3100, 4200, 3800, 1900, 950, 420, 180, 55, 10],
   ndviForest: [5, 15, 45, 190, 480, 920, 1450, 2100, 1850, 720],
 
-  // ADRF — grilla NDVI → LST causal
+  // ADRF — grilla NDVI → LST causal (calibrated to LinearGAM from modelo_final.ipynb)
+  // Key calibration points from notebook: n_splines=10
+  //   NDVI 0.3 → LST ≈ 42.35 | 0.4 → 41.84 | 0.5 → 41.81 | 0.6 → 41.35
   ndviGrid: Array.from({ length: 89 }, (_, i) => +(i / 100).toFixed(2)),
   adrf(x) {
-    if (x < 0.08) return 47.8 - x * 14;
-    if (x < 0.22) return 46.7 - (x - 0.08) * 17;
-    if (x < 0.50) return 44.3 - (x - 0.22) * 9.5;
-    return 41.6 - (x - 0.50) * 8.2;
+    // Piecewise linear interpolation calibrated to real GAM spline
+    if (x < 0.05) return 43.0;                          // extrapolation
+    if (x < 0.12) return 43.0 - (x - 0.05) * 4.79;    // bare soil: -0.335°C per 0.1
+    if (x < 0.20) return 42.664 - (x - 0.12) * 11.26;  // sparse veg: -0.901°C per 0.1
+    if (x < 0.323) return 42.16 - (x - 0.20) * 3.08;   // moderate veg: -0.308°C per 0.1
+    if (x < 0.50) return 41.78 - (x - 0.323) * 3.42;   // dense veg: -0.342°C per 0.1
+    if (x < 0.80) return 41.17 - (x - 0.50) * 15.27;   // parks/forest: -1.527°C per 0.1
+    return 36.59;                                        // extrapolation cap
   },
   marginal(x) {
-    const h = 0.005;
-    return (this.adrf(x + h) - this.adrf(x - h)) / (2 * h);
+    // Marginal effect °C per 0.1 NDVI, from notebook thermal regime table
+    if (x < 0.12) return -0.335;    // Bare soil / almost bare
+    if (x < 0.20) return -0.901;    // Sparse vegetation
+    if (x < 0.323) return -0.308;   // Moderate vegetation
+    if (x < 0.50) return -0.342;    // Dense vegetation
+    return -1.527;                  // Parks / urban forest
   },
 
-  // Love plot — confounders
+  // Love plot — confounders (Real Correlations from modelo_final.ipynb)
   confounders: [
-    'Building height', 'NTL', 'Pop. density',
-    'Dist. roads', 'Elevation', 'Dist. water',
-    'Latitude', 'Longitude', 'Urban use', 'Forest use'
+    'Impermeability', 'Building density (FAR)', 'Nighttime Lights',
+    'Dist. to Roads', 'Wind Speed', 'Elevation',
+    'Latitude', 'Longitude', 'Distance to Water'
   ],
-  rObs: [0.42, 0.39, 0.16, 0.16, 0.03, 0.06, 0.15, 0.03, 0.52, 0.29],
-  rIPW: [0.07, 0.06, 0.04, 0.04, 0.03, 0.04, 0.05, 0.03, 0.08, 0.07],
+  rObs: [0.714, 0.642, 0.587, 0.401, 0.307, 0.241, 0.237, 0.198, 0.033],
+  rIPW: [0.075, 0.076, 0.082, 0.066, 0.042, 0.047, 0.046, 0.011, 0.014],
 };

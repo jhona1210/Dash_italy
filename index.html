@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap"
     rel="stylesheet" />
 
   <!-- ─── Lucide Icons ──────────────────────────────── -->
@@ -51,7 +51,7 @@
   <div class="slide-counter">
     <span id="slide-current">01</span>
     <span class="counter-sep">/</span>
-    <span id="slide-total">08</span>
+    <span id="slide-total">09</span>
   </div>
 
   <!-- ═══════════════════════════════════════════════════
@@ -279,8 +279,103 @@
     </section>
 
 
-    <!-- ── SLIDE 3: Exploring the UHI in Milan ─────── -->
-    <section class="slide slide--lst" id="slide-3" data-slide="2">
+    <!-- ── SLIDE 3: Data Dictionary & Variables ───────── -->
+    <section class="slide slide--variables" id="slide-3" data-slide="2">
+      <div class="slide__content variables-layout">
+        <div class="variables-header">
+          <div class="slide__eyebrow">
+            <i data-lucide="book-open" class="eyebrow-icon"></i>
+            Data Dictionary & Variables
+          </div>
+          <h2 class="variables-title">The Building Blocks: Our Variables</h2>
+          <p class="variables-intro">
+            Our causal model uses 21 variables to explain how urban factors influence temperature. 
+            Click on any variable to see its definition and how it was measured.
+          </p>
+        </div>
+
+        <div class="variables-grid-container">
+          <!-- Variable groups -->
+          <div class="var-groups">
+            
+            <!-- Category 1 -->
+            <div class="var-group">
+              <h3 class="var-group-title">1. Identification & Location</h3>
+              <div class="var-buttons">
+                <button class="var-btn" data-var="municipio_id">municipio_id</button>
+                <button class="var-btn" data-var="coords">longitude & latitude</button>
+                <button class="var-btn" data-var="geometry">geometry</button>
+                <button class="var-btn" data-var="uso_dusaf">USO_DUSAF</button>
+              </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="var-group">
+              <h3 class="var-group-title">2. Satellite Indices (Earth's Signature)</h3>
+              <div class="var-buttons">
+                <button class="var-btn" data-var="ndvi">NDVI (Vegetation)</button>
+                <button class="var-btn" data-var="ndbi">NDBI (Urbanization)</button>
+                <button class="var-btn" data-var="ndwi">NDWI (Water)</button>
+                <button class="var-btn" data-var="bsi">BSI (Bare Soil)</button>
+                <button class="var-btn" data-var="albedo">Albedo</button>
+              </div>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="var-group">
+              <h3 class="var-group-title">3. The Target Variable (Heat)</h3>
+              <div class="var-buttons">
+                <button class="var-btn var-btn--target" data-var="lst">LST_Celsius</button>
+              </div>
+            </div>
+
+            <!-- Category 4 -->
+            <div class="var-group">
+              <h3 class="var-group-title">4. Environment & Climate</h3>
+              <div class="var-buttons">
+                <button class="var-btn" data-var="dist_water">Dist_Water_m</button>
+                <button class="var-btn" data-var="dist_road">Dist_Road_m</button>
+                <button class="var-btn" data-var="elevation">Elevation</button>
+                <button class="var-btn" data-var="soil_moisture">Soil_Moisture</button>
+                <button class="var-btn" data-var="wind_speed">Wind_Speed</button>
+              </div>
+            </div>
+
+            <!-- Category 5 -->
+            <div class="var-group">
+              <h3 class="var-group-title">5. Urban & Human Factors</h3>
+              <div class="var-buttons">
+                <button class="var-btn" data-var="ntl">NTL (Nighttime Lights)</button>
+                <button class="var-btn" data-var="building_height">Building_Height</button>
+                <button class="var-btn" data-var="impermeabilidad">Impermeabilidad</button>
+                <button class="var-btn" data-var="far">FAR (Floor Area Ratio)</button>
+                <button class="var-btn" data-var="pop_density">Pop_Density</button>
+              </div>
+            </div>
+
+          </div><!-- /.var-groups -->
+
+          <!-- Info Panel -->
+          <div class="var-info-panel" id="var-info-panel">
+            <div class="var-info-placeholder">
+              <i data-lucide="info" class="info-icon"></i>
+              <p>Select a variable to see details</p>
+            </div>
+            <div class="var-info-content hidden" id="var-info-content">
+              <h4 id="var-info-title">Variable Name</h4>
+              <p id="var-info-desc">Description will appear here.</p>
+              <div class="var-info-meta">
+                <span id="var-info-category">Category</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.variables-grid-container -->
+      </div><!-- /.variables-layout -->
+    </section>
+
+    <!-- ── SLIDE 4: Exploring the UHI in Milan ─────── -->
+    <section class="slide slide--lst" id="slide-4" data-slide="3">
       <div class="slide__content lst-layout">
 
         <!-- ── Header ─────────────────────────────────── -->
@@ -424,8 +519,8 @@
     </section>
 
 
-    <!-- ── SLIDE 4: ¿Por qué importa? ───────────────── -->
-    <section class="slide slide--dark" id="slide-4" data-slide="3">
+    <!-- ── SLIDE 5: ¿Por qué importa? ───────────────── -->
+    <section class="slide slide--dark" id="slide-5" data-slide="4">
       <div class="slide__content">
         <div class="slide__eyebrow"><i data-lucide="alert-triangle"></i> Impact</div>
         <h2 class="slide__title">Why Urban Heat<br />Islands Matter</h2>
@@ -469,8 +564,8 @@
       </div>
     </section>
 
-    <!-- ── SLIDE 5: Our Question ────────────────── -->
-    <section class="slide slide--question" id="slide-5" data-slide="4">
+    <!-- ── SLIDE 6: Our Question ────────────────── -->
+    <section class="slide slide--question" id="slide-6" data-slide="5">
       <div class="slide__content slide__content--centered">
         <div class="slide__eyebrow"><i data-lucide="help-circle"></i> Research Question</div>
         <div class="question-block">
@@ -500,403 +595,225 @@
       </div>
     </section>
 
-    <!-- ── SLIDE 6: GPS-IPW Methodology ─────────────── -->
-    <section class="slide" id="slide-6" data-slide="5">
+    <!-- ── SLIDE 7: GPS-IPW Methodology ─────────────── -->
+    <section class="slide" id="slide-7" data-slide="6">
       <div class="slide__content slide__content--split slide__content--split-reverse">
         <div class="split__text">
           <div class="slide__eyebrow"><i data-lucide="cpu"></i> Methodology</div>
-          <h2 class="slide__title">Generalized Propensity<br />Score (GPS-IPW)</h2>
-          <p class="slide__body">
-            Unlike classic observational methods, the GPS extends the
-            propensity score to continuous treatments. We estimate the GPS with XGBoost
-            and construct IPW weights to create a balanced "pseudo-population".
-          </p>
-          <div class="method-steps" id="method-steps">
-            <div class="method-step">
-              <span class="step-num">01</span>
-              <div class="step-body">
-                <strong>Estimate GPS</strong>
-                <p>XGBoost regressor: P(NDVI | X₁…Xₙ) with 10 confounders</p>
+          <h2 class="slide__title">Generalized Propensity Score (GPS-IPW)</h2>
+          <p class="slide__subtitle">How we isolate the causal effect</p>
+          <div class="methodology-cards">
+            <div class="method-card">
+              <div class="method-icon"><i data-lucide="brain-circuit"></i></div>
+              <div class="method-body">
+                <h4>XGBoost exposure model</h4>
+                <p>We use Machine Learning to predict NDVI based on 9 urban confounders. <b>Model R²: 0.478</b>.</p>
               </div>
             </div>
-            <div class="method-step">
-              <span class="step-num">02</span>
-              <div class="step-body">
-                <strong>Calculate IPW weights</strong>
-                <p>w_i = f(t_i) / f(t_i | X_i) — marginal over conditional</p>
-              </div>
-            </div>
-            <div class="method-step">
-              <span class="step-num">03</span>
-              <div class="step-body">
-                <strong>Estimate ADRF</strong>
-                <p>Causal dose-response with bootstrapped 95% CI</p>
-              </div>
-            </div>
-            <div class="method-step">
-              <span class="step-num">04</span>
-              <div class="step-body">
-                <strong>Verify balance</strong>
-                <p>Love plot: |r| &lt; 0.10 for all confounders</p>
+            <div class="method-card">
+              <div class="method-icon"><i data-lucide="scale"></i></div>
+              <div class="method-body">
+                <h4>Inverse Probability Weighting</h4>
+                <p>We weight each of the 282,381 pixels to create a balanced pseudo-population.</p>
               </div>
             </div>
           </div>
         </div>
         <div class="split__visual">
-          <!-- D3 container for full causal DAG -->
-          <div class="dag-container" id="dag-d3-container">
-            <svg id="dag-svg" width="100%" height="420" aria-label="GPS-IPW Causal Diagram"></svg>
-          </div>
+          <img src="assets/images/dag_gps_model_v3.svg" alt="GPS Causal DAG" class="dag-img" style="width:100%;max-width:540px;height:auto;border-radius:12px;">
         </div>
       </div>
     </section>
 
-    <!-- ── SLIDE 7: Results (NEW SCROLLABLE SCHEMA) ───────────────────────── -->
-    <section class="slide slide--results" id="slide-7" data-slide="6">
-
-      <!-- NAV -->
-      <nav>
+    <!-- ── SLIDE 8: Results ────────────────────────── -->
+    <section class="slide slide--results" id="slide-8" data-slide="7">
+      <!-- ── Sticky sub-nav ── -->
+      <nav class="results-nav">
         <span class="nav-brand">MILAN · UHI · CAUSAL</span>
-        <div class="nav-links">
-          <a href="#simulador" class="active">Simulator</a>
-          <a href="#mapa">Map</a>
-          <a href="#balance">Balance</a>
-          <a href="#comparacion">GPS vs OLS</a>
-          <a href="#validacion">Validation</a>
-        </div>
-        <span class="nav-badge">GPS-IPW + XGBoost</span>
+        <div class="nav-center" id="results-nav-dots"></div>
+        <span class="nav-badge">GPS-IPW · XGBoost · GAM</span>
       </nav>
 
-      <!-- HERO -->
-      <div class="hero">
-        <div class="hero-kicker">Causal Inference · Urban Heat Island · Milan 2021–2025</div>
-        <h1>Urban vegetation cools Milan <em>−10.83 °C</em> causally</h1>
-        <p class="hero-sub">Estimation of the causal effect of NDVI on surface temperature using Generalized Propensity Score with stabilized IPW weights and XGBoost.</p>
-        <div class="hero-stats">
-          <div class="hstat">
-            <div class="hstat-val">−10.83°C</div>
-            <div class="hstat-lbl">Total causal effect · GPS-IPW</div>
-          </div>
-          <div class="hstat">
-            <div class="hstat-val">25,540</div>
-            <div class="hstat-lbl">Pixels · 30m resolution</div>
-          </div>
-          <div class="hstat">
-            <div class="hstat-val">E = 25.18</div>
-            <div class="hstat-lbl">95% CI lower limit E-value</div>
-          </div>
-          <div class="hstat">
-            <div class="hstat-val">13/13</div>
-            <div class="hstat-lbl">Balanced confounders · ASMD &lt;0.10</div>
-          </div>
-        </div>
-      </div>
+      <div class="results-container">
 
-      <!-- ACT 1: SIMULATOR -->
-      <section class="section" id="simulador">
-        <div class="section-head">
-          <div class="act-label">Act 1 — Main Result</div>
-          <h2>Urban intervention simulator</h2>
-          <p>How much would the temperature drop if we increases the vegetation in an area? Move the sliders to calculate the estimated causal effect.</p>
-        </div>
+        <!-- ══ SECTION 1: CONFOUNDERS BALANCE ══ -->
+        <div class="results-sub-slide" id="results-s1">
+          <div class="slide-inner">
+            <div class="act-label">Methodological validation</div>
+            <div class="slide-title">Confounders Balance Before and After GPS</div>
+            <p class="slide-sub">The GPS creates a pseudo-city where vegetation is no longer correlated with wealth, cement or climate. Toggle to see the balancing effect.</p>
 
-        <div class="sim-layout">
-          <div class="card">
-            <div class="slider-group">
-              <div class="slider-top">
-                <span class="slider-name">Current NDVI (A) — starting zone</span>
-                <span class="slider-val" id="va" style="color:var(--purple)">0.20</span>
+            <div class="bal-layout">
+              <div class="card">
+                <div class="toggle-row">
+                  <span class="badge badge-obs">Unbalanced</span>
+                  <div class="toggle-track" id="bal-toggle">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                  <span class="badge badge-exp">GPS balanced</span>
+                </div>
+                <div class="narr-box" id="bal-narr">
+                  In the observational world, NDVI is strongly correlated with urban confounders. Green areas are systematically less dense and less paved — the correlation is not causal.
+                </div>
+                <div style="position:relative;" id="balance">
+                  <div style="height:380px;"><canvas id="bal-chart"></canvas></div>
+                </div>
               </div>
-              <input type="range" id="sl-a" min="10" max="81" step="1" value="20" oninput="updateSim()">
-              <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--ink3)">
-                <span>Pure asphalt</span><span id="ctx-a" style="color:var(--ink2)">mixed urban zone</span><span>Forest</span>
-              </div>
-            </div>
 
-            <div class="slider-group">
-              <div class="slider-top">
-                <span class="slider-name">Target NDVI (B) — intervention goal</span>
-                <span class="slider-val" id="vb" style="color:var(--teal)">0.55</span>
-              </div>
-              <input type="range" id="sl-b" min="10" max="81" step="1" value="55" oninput="updateSim()">
-              <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--ink3)">
-                <span>Pure asphalt</span><span id="ctx-b" style="color:var(--ink2)">urban park</span><span>Forest</span>
-              </div>
-            </div>
-
-            <div style="position:relative;height:280px;margin-top:8px;">
-              <canvas id="adrf-chart"></canvas>
-            </div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:8px;text-align:center;">
-              Causal dose-response curve (ADRF) · GPS-IPW + XGBoost · Bootstrapped 95% CI · Milan 2021–2025
-            </div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div class="effect-panel cool" id="ebox">
-              <div class="ep-label" id="ep-label" style="color:var(--teal)">Causal cooling effect</div>
-              <div class="ep-big" id="ep-big" style="color:var(--teal)">−4.1°C</div>
-              <div class="ep-desc" id="ep-desc" style="color:var(--teal)">NDVI 0.20 → 0.55</div>
-              <div class="ep-rows">
-                <div class="ep-row"><span>LST at A</span><b id="lst-a">46.4°C</b></div>
-                <div class="ep-row"><span>LST at B</span><b id="lst-b">42.3°C</b></div>
-                <div class="ep-row"><span>95% CI</span><b id="lst-ic">[−5.1, −3.2]°C</b></div>
-                <div class="ep-row"><span>Marginal effect at B</span><b id="marg-b">−10.2°C/NDVI</b></div>
-              </div>
-            </div>
-
-            <div class="card" style="padding:20px 24px;">
-              <div style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;">Equivalents</div>
-              <div class="ep-row"><span>Approx. area</span><b id="eq-area" style="font-family:var(--mono)">~12 ha</b></div>
-              <div class="ep-row"><span>Equiv. trees</span><b id="eq-trees" style="font-family:var(--mono)">~2,800</b></div>
-              <div class="ep-row"><span>Affected pixels</span><b id="eq-px" style="font-family:var(--mono)">~1,333</b></div>
-            </div>
-
-            <div class="metric">
-              <div class="metric-lbl">Maximum possible total effect</div>
-              <div class="metric-val" style="color:var(--teal)">−10.83°C</div>
-              <div style="font-size:12px;color:var(--ink3);margin-top:4px;">NDVI 0.095 → 0.815 · 95% CI: [−10.82, −9.03]</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ACT 2: MAP -->
-      <section class="section" id="mapa">
-        <div class="section-head">
-          <div class="act-label">Act 2 — Spatial Distribution</div>
-          <h2>Local causal effect map</h2>
-          <p>Each pixel in Milan colored by how many degrees its vegetation causally cools. Blue = greater cooling.</p>
-        </div>
-
-        <div class="map-placeholder">
-          <div class="map-dots" id="map-dots"></div>
-          <div class="map-note">
-            <h3>Folium Map with Real Data</h3>
-            <p style="font-size:13px;margin-bottom:10px;">
-              Generate the map by running in your notebook:<br>
-              <code>causal_effect_map(n_puntos=6000)</code>
-            </p>
-            <p style="font-size:12px;color:rgba(255,255,255,0.5);">
-              Or directly open the file<br>
-              <code>causal_effect_map_milan_real.html</code>
-            </p>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;">
-          <div class="card" style="text-align:center;">
-            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Avg. causal effect</div>
-            <div style="font-family:var(--mono);font-size:24px;color:var(--teal);">−2.27°C</div>
-            <div style="font-size:12px;color:var(--ink3);margin-top:4px;">average per pixel</div>
-          </div>
-          <div class="card" style="text-align:center;">
-            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Max. cooling</div>
-            <div style="font-family:var(--mono);font-size:24px;color:var(--teal);">−7.06°C</div>
-            <div style="font-size:12px;color:var(--ink3);margin-top:4px;">high NDVI pixels</div>
-          </div>
-          <div class="card" style="text-align:center;">
-            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;">Counterfactual LST</div>
-            <div style="font-family:var(--mono);font-size:24px;color:var(--red);">46.4°C</div>
-            <div style="font-size:12px;color:var(--ink3);margin-top:4px;">without vegetation (NDVI=0)</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ACT 3: BALANCE / LOVE PLOT -->
-      <section class="section" id="balance">
-        <div class="section-head">
-          <div class="act-label">Act 3 — The Black Box Revealed</div>
-          <h2>De-biasing laboratory</h2>
-          <p>GPS-IPW mathematically simulates a city where vegetation was planted at random. The toggle shows how correlations collapse.</p>
-        </div>
-
-        <div class="toggle-row">
-          <span class="badge badge-obs">Observational World</span>
-          <div class="toggle-track" id="bal-toggle" onclick="toggleBal()">
-            <div class="toggle-thumb"></div>
-          </div>
-          <span class="badge badge-exp">IPW Pseudo-population</span>
-        </div>
-
-        <div class="narr-box" id="bal-narr">
-          In the observational world, NDVI is strongly correlated with urban confounders. Green areas are systematically less dense and less paved — the correlation is not causal: it reflects who has access to the green.
-        </div>
-
-        <div style="display:grid;grid-template-columns:2fr 1fr;gap:28px;align-items:start;">
-          <div class="card">
-            <div style="position:relative;height:400px;">
-              <canvas id="bal-chart"></canvas>
-            </div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--ink3);margin-top:8px;text-align:center;">
-              ASMD = Absolute Standardized Mean Difference · Threshold &lt;0.10 · Model augmented with quadratic terms
-            </div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div class="metric">
-              <div class="metric-lbl">Avg. ASMD before</div>
-              <div class="metric-val" style="color:var(--red)">0.2119</div>
-            </div>
-            <div class="metric">
-              <div class="metric-lbl">Avg. ASMD after</div>
-              <div class="metric-val" style="color:var(--teal)">0.0359</div>
-              <div style="font-size:12px;color:var(--teal);margin-top:2px;">Improvement: 83%</div>
-            </div>
-            <div class="metric">
-              <div class="metric-lbl">Balanced confounders</div>
-              <div class="metric-val" style="color:var(--teal)">13 / 13</div>
-              <div style="font-size:12px;color:var(--teal);margin-top:2px;">All below 0.10 threshold</div>
-            </div>
-            <div style="background:var(--teal-l);border-radius:var(--r);padding:16px 18px;border:1px solid rgba(46,125,50,0.5);">
-              <div style="font-family:var(--mono);font-size:10px;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Methodological Key</div>
-              <div style="font-size:13px;color:var(--ink2);font-style:italic;line-height:1.6;">
-                "To measure the true effect of trees, the algorithm mathematically simulated a version of Milan where vegetation was distributed at random."
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <div style="background:var(--paper);border-radius:10px;padding:20px 24px;">
+                  <div class="metric-lbl">Mean ASMD before</div>
+                  <div class="metric-val" style="color:var(--heat-extreme)">0.2119</div>
+                </div>
+                <div style="background:var(--paper);border-radius:10px;padding:20px 24px;">
+                  <div class="metric-lbl">Mean ASMD after</div>
+                  <div class="metric-val" style="color:var(--veg-dark)">0.0359</div>
+                  <div style="font-size:12px;color:var(--veg-dark);margin-top:2px;">Improvement: 83%</div>
+                </div>
+                <div style="background:var(--paper);border-radius:10px;padding:20px 24px;">
+                  <div class="metric-lbl">Balanced confounders</div>
+                  <div class="metric-val" style="color:var(--veg-dark)">7 / 7</div>
+                  <div style="font-size:12px;color:var(--veg-dark);margin-top:2px;">All below threshold 0.10</div>
+                </div>
+                <div style="background:var(--veg-light-bg, #E8F5E9);border-radius:10px;padding:16px 18px;border:1px solid var(--veg-light, #66BB6A);">
+                  <div style="font-family:var(--mono);font-size:10px;color:var(--veg-dark);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Methodological key</div>
+                  <div style="font-size:13px;color:var(--text-s, #555);font-style:italic;line-height:1.6;">"The GPS mathematically simulated a version of Milan where vegetation was distributed independently of cement and density."</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      <!-- ACT 4: GPS vs OLS -->
-      <section class="section" id="comparacion">
-        <div class="section-head">
-          <div class="act-label">Act 4 — The History of Bias</div>
-          <h2>GPS-IPW vs OLS vs Brute Correlation</h2>
-          <p>Multiple OLS underestimates the cooling effect by 4.62°C. GPS corrects for linear overcontrol bias.</p>
-        </div>
+        <!-- ══ SECTION 2: URBAN INTERVENTION SIMULATOR ══ -->
+        <div class="results-sub-slide" id="results-s2">
+          <div class="slide-inner">
+            <div class="act-label">Main result</div>
+            <div class="slide-title">Urban Intervention Simulator</div>
+            <p class="slide-sub">Move the sliders to calculate the estimated causal effect of changing vegetation in any area of Milan.</p>
 
-        <div class="comp-grid">
-          <div class="comp-card">
-            <div class="comp-tag" style="color:var(--red)">Brute Correlation</div>
-            <div class="comp-val" style="color:var(--red)">−8.49°C</div>
-            <div class="comp-sub">No controls · R²=0.491</div>
-            <span class="comp-badge" style="background:var(--red-l);color:var(--red)">no assumptions</span>
-          </div>
-          <div class="comp-card">
-            <div class="comp-tag" style="color:var(--purple)">Multiple OLS</div>
-            <div class="comp-val" style="color:var(--purple)">−4.74°C</div>
-            <div class="comp-sub">With linear controls · R²=0.643</div>
-            <span class="comp-badge" style="background:var(--purple-l);color:var(--purple)">linearity + additivity</span>
-          </div>
-          <div class="comp-card highlight">
-            <div class="comp-tag" style="color:var(--teal)">GPS-IPW + XGBoost</div>
-            <div class="comp-val" style="color:var(--teal)">−9.35°C</div>
-            <div class="comp-sub">Causal estimation · R²=0.564</div>
-            <span class="comp-badge" style="background:var(--teal-l);color:var(--teal)">conditional ignorability</span>
-          </div>
-        </div>
+            <div class="sim-layout">
+              <div class="card">
+                <div class="slider-group">
+                  <div class="slider-top">
+                    <span class="slider-name">Current NDVI (A) — starting area</span>
+                    <span class="slider-val" id="va" style="color:var(--urban-infra, #534AB7)">0.20</span>
+                  </div>
+                  <input type="range" id="sl-a" min="10" max="78" step="1" value="20">
+                  <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--text-muted)">
+                    <span>Asphalt</span><span id="ctx-a" style="color:var(--text-main)">zona urbana mixta</span><span>Forest</span>
+                  </div>
+                </div>
+                <div class="slider-group" style="margin-top:16px;">
+                  <div class="slider-top">
+                    <span class="slider-name">Target NDVI (B) — intervention goal</span>
+                    <span class="slider-val" id="vb" style="color:var(--veg-dark)">0.55</span>
+                  </div>
+                  <input type="range" id="sl-b" min="10" max="78" step="1" value="55">
+                  <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--text-muted)">
+                    <span>Asphalt</span><span id="ctx-b" style="color:var(--text-main)">parque urbano</span><span>Forest</span>
+                  </div>
+                </div>
+                <div style="position:relative;height:280px;margin-top:20px;">
+                  <canvas id="adrf-chart"></canvas>
+                </div>
+                <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-top:8px;text-align:center;">
+                  Causal dose-response curve (ADRF) · GPS-IPW + XGBoost · 95% CI · Milan 2024
+                </div>
+              </div>
 
-        <div style="display:grid;grid-template-columns:3fr 2fr;gap:28px;align-items:start;">
-          <div class="card">
-            <div style="position:relative;height:300px;">
-              <canvas id="comp-chart"></canvas>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <div class="effect-panel cool" id="ebox">
+                  <div class="ep-label" id="ep-label" style="color:var(--veg-dark)">Causal cooling effect</div>
+                  <div class="ep-big" id="ep-big" style="color:var(--veg-dark)">−4.1°C</div>
+                  <div class="ep-desc" id="ep-desc" style="color:var(--veg-light, #66BB6A)">NDVI 0.20 → 0.55</div>
+                  <div class="ep-rows">
+                    <div class="ep-row"><span>LST en A</span><b id="lst-a">46.4°C</b></div>
+                    <div class="ep-row"><span>LST en B</span><b id="lst-b">42.3°C</b></div>
+                    <div class="ep-row"><span>IC 95%</span><b id="lst-ic">[−5.0, −3.2]°C</b></div>
+                    <div class="ep-row"><span>Ef. marginal en B</span><b id="marg-b">−9.8°C/NDVI</b></div>
+                  </div>
+                </div>
+
+                <div class="card" style="padding:20px 24px;">
+                  <div style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Intervention equivalents</div>
+                  <div class="ep-row"><span>Approx. area</span><b id="eq-area" style="font-family:var(--mono)">~210 ha</b></div>
+                  <div class="ep-row"><span>Equiv. trees</span><b id="eq-trees" style="font-family:var(--mono)">~210,000</b></div>
+                  <div class="ep-row"><span>% ForestaMi target</span><b id="eq-pct" style="font-family:var(--mono)">7% of 3M</b></div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div class="card" style="background:var(--purple-l);border-color:#AFA9EC;">
-              <div style="font-family:var(--mono);font-size:10px;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Multiple OLS Bias</div>
-              <div style="font-family:var(--mono);font-size:28px;color:var(--purple);font-weight:700;">+4.62°C</div>
-              <div style="font-size:13px;color:var(--ink2);margin-top:6px;font-style:italic;">OLS overcontrols variables that in the DAG are partially mediators, underestimating the real cooling effect.</div>
+        <!-- ══ SECTION 3: THREE THERMAL REGIMES ══ -->
+        <div class="results-sub-slide" id="results-s3">
+          <div class="slide-inner">
+            <div class="act-label">Main discovery</div>
+            <div class="slide-title">Three Thermal Regimes in Milan</div>
+            <p class="slide-sub">The vegetation effect is non-linear. The GPS revealed three distinct physical phenomena based on canopy density.</p>
+
+            <div class="pheno-grid">
+              <div class="pheno-card pheno-card--1">
+                <div class="pheno-num">I · The Albedo Trap</div>
+                <div class="pheno-name">Bare soil heats more than light asphalt</div>
+                <div class="pheno-range">NDVI &lt; 0.18</div>
+                <div class="pheno-val">+0.78°C</div>
+                <div class="pheno-desc">Moving from light concrete to dark or bare soil <em>increases</em> temperature. Surface albedo dominates over evapotranspiration when there is insufficient plant mass.</div>
+                <div class="pheno-bar-wrap"><div class="pheno-bar" style="width:31%;"></div></div>
+              </div>
+
+              <div class="pheno-card pheno-card--2">
+                <div class="pheno-num">II · Sparse Linear Cooling</div>
+                <div class="pheno-name">Fragmented vegetation fights against asphalt</div>
+                <div class="pheno-range">NDVI 0.18 – 0.60</div>
+                <div class="pheno-val">−0.74 a −0.93°C</div>
+                <div class="pheno-desc">Constant but moderate cooling per 0.1 NDVI increment. The thermal mass of cement absorbs most of the benefit from scattered vegetation.</div>
+                <div class="pheno-bar-wrap"><div class="pheno-bar" style="width:37%;"></div></div>
+              </div>
+
+              <div class="pheno-card pheno-card--3">
+                <div class="pheno-num">III · Park Microclimate</div>
+                <div class="pheno-name">Continuous canopy collapses temperature</div>
+                <div class="pheno-range">NDVI &gt; 0.60</div>
+                <div class="pheno-val">−2.49°C</div>
+                <div class="pheno-desc">Once the continuous canopy threshold is crossed at 100m scale, synergistic evapotranspiration produces a drastic, non-linear cooling effect.</div>
+                <div class="pheno-bar-wrap"><div class="pheno-bar" style="width:100%;"></div></div>
+              </div>
             </div>
-            <div class="metric">
-              <div class="metric-lbl">OLS corrects from brute bias</div>
-              <div class="metric-val">44.2%</div>
+
+            <div class="card" style="background:var(--text-main);color:var(--white, #fff);border-color:rgba(255,255,255,.06);margin-top:32px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
+                <div>
+                  <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--veg-light, #66BB6A);margin-bottom:12px;">Implication for ForestaMi</div>
+                  <p style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;">Planting scattered trees is not enough. Milan must exceed the <strong style="color:#fff;">critical NDVI 0.45</strong> in continuous 100m blocks for the cooling effect to become exponential. Areas with NDVI 0.35–0.60 are the top investment priority.</p>
+                </div>
+                <div style="display:flex;gap:24px;flex-wrap:wrap;">
+                  <div class="hstat">
+                    <div class="hstat-val">NDVI 0.45</div>
+                    <div class="hstat-lbl">Inflection threshold</div>
+                  </div>
+                  <div class="hstat">
+                    <div class="hstat-val">3.4×</div>
+                    <div class="hstat-lbl">Greater effect post-threshold</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="metric">
-              <div class="metric-lbl">GPS corrects from brute bias</div>
-              <div class="metric-val" style="color:var(--teal)">10.1%</div>
-              <div style="font-size:12px;color:var(--ink3);margin-top:2px;">GPS preserves the real causal effect</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ACT 5: VALIDATION -->
-      <section class="section" id="validacion">
-        <div class="section-head">
-          <div class="act-label">Act 5 — Robustness and Validation</div>
-          <h2>Validation Tables</h2>
-          <p>Formal tests supporting the causal validity of the main result.</p>
-        </div>
-
-        <div class="val-grid">
-          <div class="val-card pass">
-            <div class="val-title">E-value · VanderWeele & Ding (2017)</div>
-            <div class="val-metric" style="color:var(--teal)">25.18</div>
-            <div class="val-desc">An unobserved confounder would need association ≥25.18× with NDVI and LST to invalidate the 95% CI.</div>
-            <span class="val-status status-ok">✓ Very robust</span>
-          </div>
-          <div class="val-card pass">
-            <div class="val-title">ASMD Balance · Augmented Model</div>
-            <div class="val-metric" style="color:var(--teal)">13 / 13</div>
-            <div class="val-desc">All confounders with ASMD &lt;0.10 after IPW rebalancing. Avg. ASMD = 0.036.</div>
-            <span class="val-status status-ok">✓ Perfect balance</span>
-          </div>
-          <div class="val-card pass">
-            <div class="val-title">Bootstrap 95% CI</div>
-            <div class="val-metric" style="color:var(--teal)">[−10.82, −9.03]°C</div>
-            <div class="val-desc">200 iterations. Narrow CI — average width 0.82°C along the entire ADRF curve.</div>
-            <span class="val-status status-ok">✓ Stable</span>
-          </div>
-          <div class="val-card pass">
-            <div class="val-title">Placebo Test · Elevation</div>
-            <div class="val-metric" style="color:var(--teal)">p &gt; 0.05</div>
-            <div class="val-desc">GPS does not estimate causal effect on variables that cannot be affected by NDVI.</div>
-            <span class="val-status status-ok">✓ No spurious effect</span>
           </div>
         </div>
 
-        <div class="card">
-          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;">Sensitivity analysis — local wind (unobserved confounder)</div>
-          <table>
-            <thead>
-              <tr>
-                <th>Scenario</th>
-                <th>r(wind, NDVI)</th>
-                <th>Est. Bias</th>
-                <th>Adjusted Effect</th>
-                <th>Within 95% CI</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Weak association</td>
-                <td class="mono">0.15</td>
-                <td class="mono">+0.19°C</td>
-                <td class="teal">−10.64°C</td>
-                <td class="teal">✓ Yes</td>
-              </tr>
-              <tr>
-                <td>Moderate association</td>
-                <td class="mono">0.30</td>
-                <td class="mono">+0.78°C</td>
-                <td class="teal">−10.05°C</td>
-                <td class="teal">✓ Yes</td>
-              </tr>
-              <tr>
-                <td>Strong association (pessimistic)</td>
-                <td class="mono">0.50</td>
-                <td class="mono">+2.17°C</td>
-                <td class="red">−8.66°C</td>
-                <td class="red">⚠ Marginal</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      </div><!-- /results-container -->
 
-      <footer>
-        <div class="fl">Milan · Urban Heat Island · GPS-IPW Causal Analysis · 2021–2025</div>
+      <footer class="results-footer">
+        <div class="fl">Milan &middot; Urban Heat Island &middot; GPS-IPW Causal Analysis &middot; 2021&ndash;2025</div>
         <div class="fr">Externado University of Colombia</div>
       </footer>
-
-      <!-- Sticky Next Button Placeholders will be handled by main.js floating logic -->
     </section>
 
-    <!-- ── SLIDE 8: Recommendations ──────────────────── -->
-    <section class="slide slide--policy" id="slide-8" data-slide="7">
+
+
+    <!-- ── SLIDE 9: Recommendations ──────────────────── -->
+    <section class="slide slide--policy" id="slide-9" data-slide="8">
       <div class="slide__content">
         <div class="slide__eyebrow"><i data-lucide="landmark"></i> Policy Recommendations</div>
         <h2 class="slide__title">Where and how to intervene?</h2>

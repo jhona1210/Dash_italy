@@ -4,3 +4,5 @@ test-html.js
 node_modules/
 .env
 EOF
+assets/data/milan_final2.geojson
+assets/data/milan_final2.geojson:Zone.Identifier

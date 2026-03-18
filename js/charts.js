@@ -488,8 +488,7 @@ function initChartsForSlide(slideKey) {
       setTimeout(initDAG, 80);
       break;
     case 'results':
-      setTimeout(initADRF,     80);
-      setTimeout(initLovePlot, 80);
+      // El slide de resultados usa su propia lógica en index.html (slide7_external)
       break;
     case 'policy':
       setTimeout(initMarginal, 80);
