@@ -254,35 +254,41 @@ const UHI_DATA = {
   ndviUrban: [820, 3100, 4200, 3800, 1900, 950, 420, 180, 55, 10],
   ndviForest: [5, 15, 45, 190, 480, 920, 1450, 2100, 1850, 720],
 
-  // ADRF — grilla NDVI → LST causal (calibrated to LinearGAM from modelo_final.ipynb)
-  // Key calibration points from notebook: n_splines=10
-  //   NDVI 0.3 → LST ≈ 42.35 | 0.4 → 41.84 | 0.5 → 41.81 | 0.6 → 41.35
+  // ADRF — curva NDVI → LST causal CORREGIDA (Fase 6: GPS sin lat/lon + sigma homocedastica)
+  // Fuente: F6_ADRF_tabla.csv (GAM ponderado, IC95 bootstrap espacial). Soporte [0.13, 0.82].
+  // Lookup table de la curva real (cada ~0.02 NDVI) + interpolacion lineal.
+  adrfLUT: [
+    [0.129,44.36],[0.149,44.62],[0.169,44.60],[0.189,44.38],[0.209,44.02],[0.229,43.57],
+    [0.249,43.08],[0.269,42.60],[0.289,42.19],[0.309,41.90],[0.329,41.77],[0.349,41.73],
+    [0.369,41.74],[0.389,41.74],[0.409,41.67],[0.429,41.50],[0.449,41.28],[0.469,41.06],
+    [0.489,40.86],[0.509,40.73],[0.529,40.66],[0.549,40.59],[0.569,40.50],[0.589,40.34],
+    [0.609,40.08],[0.629,39.74],[0.649,39.33],[0.669,38.88],[0.689,38.41],[0.709,37.94],
+    [0.729,37.46],[0.749,36.96],[0.769,36.44],[0.789,35.89],[0.809,35.30],[0.822,34.92]
+  ],
   ndviGrid: Array.from({ length: 89 }, (_, i) => +(i / 100).toFixed(2)),
   adrf(x) {
-    // Piecewise linear interpolation calibrated to real GAM spline
-    if (x < 0.05) return 43.0;                          // extrapolation
-    if (x < 0.12) return 43.0 - (x - 0.05) * 4.79;    // bare soil: -0.335°C per 0.1
-    if (x < 0.20) return 42.664 - (x - 0.12) * 11.26;  // sparse veg: -0.901°C per 0.1
-    if (x < 0.323) return 42.16 - (x - 0.20) * 3.08;   // moderate veg: -0.308°C per 0.1
-    if (x < 0.50) return 41.78 - (x - 0.323) * 3.42;   // dense veg: -0.342°C per 0.1
-    if (x < 0.80) return 41.17 - (x - 0.50) * 15.27;   // parks/forest: -1.527°C per 0.1
-    return 36.59;                                        // extrapolation cap
+    // Interpolacion lineal sobre la curva real corregida (clamp en los extremos del soporte)
+    const L = this.adrfLUT;
+    if (x <= L[0][0]) return L[0][1];
+    if (x >= L[L.length - 1][0]) return L[L.length - 1][1];
+    for (let i = 1; i < L.length; i++) {
+      if (x <= L[i][0]) {
+        const [x0, y0] = L[i - 1], [x1, y1] = L[i];
+        return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+      }
+    }
+    return L[L.length - 1][1];
   },
   marginal(x) {
-    // Marginal effect °C per 0.1 NDVI, from notebook thermal regime table
-    if (x < 0.12) return -0.335;    // Bare soil / almost bare
-    if (x < 0.20) return -0.901;    // Sparse vegetation
-    if (x < 0.323) return -0.308;   // Moderate vegetation
-    if (x < 0.50) return -0.342;    // Dense vegetation
-    return -1.527;                  // Parks / urban forest
+    // Efecto marginal local (dLST por +0.1 NDVI) = derivada de la curva corregida
+    return +(this.adrf(x + 0.05) - this.adrf(x - 0.05)).toFixed(3);
   },
 
-  // Love plot — confounders (Real Correlations from modelo_final.ipynb)
+  // Love plot — back-door set CORREGIDO (Fase 3/5): 7 confusores, |corr| crudo vs |corr| ponderado IPW
   confounders: [
-    'Impermeability', 'Building density (FAR)', 'Nighttime Lights',
-    'Dist. to Roads', 'Wind Speed', 'Elevation',
-    'Latitude', 'Longitude', 'Distance to Water'
+    'Impermeability', 'Building density (FAR)', 'Land use: Agriculture',
+    'Land use: Forest/Nature', 'Land use: Wetlands', 'Elevation', 'Wind Speed'
   ],
-  rObs: [0.714, 0.642, 0.587, 0.401, 0.307, 0.241, 0.237, 0.198, 0.033],
-  rIPW: [0.075, 0.076, 0.082, 0.066, 0.042, 0.047, 0.046, 0.011, 0.014],
+  rObs: [0.807, 0.725, 0.535, 0.216, 0.001, 0.261, 0.344],
+  rIPW: [0.023, 0.011, 0.170, 0.152, 0.000, 0.082, 0.095],
 };

@@ -584,7 +584,7 @@
         </div>
         <!-- Simple DAG -->
         <div class="dag-simple" id="dag-simple-container">
-          <div class="dag-node dag-node--conf">Confounders<br /><small>Density, NTL,<br />Land use…</small></div>
+          <div class="dag-node dag-node--conf">Confounders<br /><small>Impervious, FAR,<br />Land use…</small></div>
           <div class="dag-arrows">
             <div class="dag-arrow dag-arrow--top">↙ ↘</div>
           </div>
@@ -723,12 +723,12 @@
               <div class="hstat-lbl">Pixels analyzed</div>
             </div>
             <div class="hstat">
-              <div class="hstat-val">9</div>
-              <div class="hstat-lbl">Confounders balanced</div>
+              <div class="hstat-val">7</div>
+              <div class="hstat-lbl">Confounders adjusted</div>
             </div>
             <div class="hstat">
-              <div class="hstat-val">−9.35°C</div>
-              <div class="hstat-lbl">Total causal effect</div>
+              <div class="hstat-val">−2.4°C</div>
+              <div class="hstat-lbl">Causal effect (p25→p75, AIPW)</div>
             </div>
           </div>
         </div>
@@ -759,18 +759,18 @@
 
               <div style="display:flex;flex-direction:column;gap:16px;">
                 <div class="metric" style="background:rgba(255,255,255,0.03);">
-                  <div class="metric-lbl">Mean ASMD before</div>
-                  <div class="metric-val" style="color:var(--heat-extreme)">0.2119</div>
+                  <div class="metric-lbl">Mean |correlation| before</div>
+                  <div class="metric-val" style="color:var(--heat-extreme)">0.413</div>
                 </div>
                 <div class="metric" style="background:rgba(255,255,255,0.03);">
-                  <div class="metric-lbl">Mean ASMD after</div>
-                  <div class="metric-val" style="color:var(--veg-dark)">0.0359</div>
-                  <div style="font-size:12px;color:var(--veg-light);margin-top:2px;">Improvement: 83%</div>
+                  <div class="metric-lbl">Mean |correlation| after (IPW)</div>
+                  <div class="metric-val" style="color:var(--veg-dark)">0.076</div>
+                  <div style="font-size:12px;color:var(--veg-light);margin-top:2px;">Improvement: 82%</div>
                 </div>
                 <div class="metric" style="background:rgba(255,255,255,0.03);">
                   <div class="metric-lbl">Balanced confounders</div>
-                  <div class="metric-val" style="color:var(--veg-dark)">7 / 7</div>
-                  <div style="font-size:12px;color:var(--veg-light);margin-top:2px;">All below threshold 0.10</div>
+                  <div class="metric-val" style="color:var(--veg-dark)">5 / 7</div>
+                  <div style="font-size:12px;color:var(--veg-light);margin-top:2px;">Below threshold 0.10 (2 land-use vars remain)</div>
                 </div>
                 <div style="background:rgba(46,125,50,0.1);border-radius:10px;padding:16px 18px;border:1px solid rgba(46,125,50,0.3);">
                   <div style="font-family:var(--mono);font-size:10px;color:var(--veg-light);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Methodological key</div>
@@ -847,33 +847,33 @@
           <div class="slide-inner">
             <div class="act-label">Main discovery</div>
             <div class="slide-title">Three Thermal Regimes in Milan</div>
-            <p class="slide-sub">The vegetation effect is non-linear. The GPS revealed three distinct physical phenomena based on canopy density.</p>
+            <p class="slide-sub">The cooling effect is non-linear: it barely exists while vegetation is sparse, and accelerates sharply once the canopy becomes continuous.</p>
 
             <div class="pheno-grid">
-              <div class="pheno-card" style="border-top:4px solid var(--heat-extreme);">
-                <div class="pheno-num" style="color:var(--heat-extreme)">I · The Albedo Trap</div>
-                <div class="pheno-name">Bare soil heats more than light asphalt</div>
-                <div class="pheno-range">NDVI &lt; 0.18</div>
-                <div class="pheno-val" style="color:var(--heat-extreme)">+0.78°C</div>
-                <div class="pheno-desc">Moving from light concrete to dark or bare soil <em>increases</em> temperature. Surface albedo dominates over evapotranspiration when there is insufficient plant mass.</div>
-                <div class="pheno-bar-wrap"><div class="pheno-bar" style="width:31%;background:var(--heat-extreme);"></div></div>
+              <div class="pheno-card" style="border-top:4px solid var(--temp-neutral);">
+                <div class="pheno-num" style="color:var(--temp-neutral)">I · Threshold</div>
+                <div class="pheno-name">Sparse vegetation barely cools</div>
+                <div class="pheno-range">NDVI &lt; 0.20</div>
+                <div class="pheno-val" style="color:var(--temp-neutral)">≈ 0°C</div>
+                <div class="pheno-desc">Below ~0.20 NDVI, scattered greenery over asphalt produces no measurable cooling — a slight warming from low-albedo bare soil appears but is <em>not statistically significant</em> (wide spatial CI).</div>
+                <div class="pheno-bar-wrap"><div class="pheno-bar" style="width:8%;background:var(--temp-neutral);"></div></div>
               </div>
 
-              <div class="pheno-card" style="border-top:4px solid var(--temp-neutral);">
-                <div class="pheno-num" style="color:var(--temp-neutral)">II · Sparse Linear Cooling</div>
-                <div class="pheno-name">Fragmented vegetation fights against asphalt</div>
-                <div class="pheno-range">NDVI 0.18 – 0.60</div>
-                <div class="pheno-val" style="color:var(--temp-neutral)">−0.74 to −0.93°C</div>
-                <div class="pheno-desc">Constant but moderate cooling per 0.1 NDVI increment. The thermal mass of cement absorbs most of the benefit from scattered vegetation.</div>
-                <div class="pheno-bar-wrap"><div class="pheno-bar" style="width:37%;background:var(--temp-neutral);"></div></div>
+              <div class="pheno-card" style="border-top:4px solid var(--veg-light);">
+                <div class="pheno-num" style="color:var(--veg-light)">II · Progressive Cooling</div>
+                <div class="pheno-name">Vegetation establishes against asphalt</div>
+                <div class="pheno-range">NDVI 0.20 – 0.60</div>
+                <div class="pheno-val" style="color:var(--veg-light)">≈ −1.0°C / 0.1</div>
+                <div class="pheno-desc">Real but irregular cooling: a fast initial drop as vegetation becomes continuous (~0.20–0.30), a short plateau, then a steady decline. Average ~−1.0°C per 0.1 NDVI.</div>
+                <div class="pheno-bar-wrap"><div class="pheno-bar" style="width:42%;background:var(--veg-light);"></div></div>
               </div>
 
               <div class="pheno-card" style="border-top:4px solid var(--veg-dark);">
                 <div class="pheno-num" style="color:var(--veg-light)">III · Park Microclimate</div>
                 <div class="pheno-name">Continuous canopy collapses temperature</div>
                 <div class="pheno-range">NDVI &gt; 0.60</div>
-                <div class="pheno-val" style="color:var(--veg-light)">−2.49°C</div>
-                <div class="pheno-desc">Once the continuous canopy threshold is crossed at 100m scale, synergistic evapotranspiration produces a drastic, non-linear cooling effect.</div>
+                <div class="pheno-val" style="color:var(--veg-light)">≈ −2.4°C / 0.1</div>
+                <div class="pheno-desc">Past continuous-canopy at 100m scale, synergistic evapotranspiration drives the steepest cooling of the whole curve — the strongest and most robust regime.</div>
                 <div class="pheno-bar-wrap"><div class="pheno-bar" style="width:100%;background:var(--veg-dark);"></div></div>
               </div>
             </div>
@@ -882,16 +882,16 @@
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
                 <div>
                   <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--veg-light);margin-bottom:12px;">Implication for ForestaMi</div>
-                  <p style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;">Planting scattered trees is not enough. Milan must exceed the <strong style="color:#fff;">critical NDVI 0.45</strong> in continuous 100m blocks for the cooling effect to become exponential. Areas with NDVI 0.35–0.60 are the top investment priority.</p>
+                  <p style="font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;">Scattered planting barely moves surface temperature. Cooling becomes steep only as blocks approach <strong style="color:#fff;">continuous canopy (NDVI &gt; 0.60)</strong>, where each +0.1 NDVI removes ~2.4°C — about <strong style="color:#fff;">2.4×</strong> the effect in the sparse-to-moderate range. Priority: push high-potential blocks past the canopy threshold, not scatter trees.</p>
                 </div>
                 <div style="display:flex;gap:24px;flex-wrap:wrap;">
                   <div class="hstat">
-                    <div class="hstat-val">NDVI 0.45</div>
-                    <div class="hstat-lbl">Inflection threshold</div>
+                    <div class="hstat-val">NDVI 0.60</div>
+                    <div class="hstat-lbl">Canopy threshold</div>
                   </div>
                   <div class="hstat">
-                    <div class="hstat-val">3.4×</div>
-                    <div class="hstat-lbl">Greater effect post-threshold</div>
+                    <div class="hstat-val">≈2.4×</div>
+                    <div class="hstat-lbl">Greater effect in dense canopy</div>
                   </div>
                 </div>
               </div>
@@ -944,15 +944,31 @@
     const N_adrf = 150;
     const grid_adrf = Array.from({length:N_adrf},(_,i)=>0.095+i*(0.815-0.095)/(N_adrf-1));
 
-    function adrf_calc(x){
-      if(x<0.12) return 46.78-(x-0.095)*14;
-      if(x<0.25) return 46.44-(x-0.12)*17;
-      if(x<0.50) return 44.23-(x-0.25)*9.8;
-      return 41.78-(x-0.50)*7.2;
+    // Curva ADRF CORREGIDA (Fase 6: GPS sin lat/lon + sigma homocedastica) — F6_ADRF_tabla.csv
+    const ADRF_LUT=[
+      [0.129,44.36],[0.149,44.62],[0.169,44.60],[0.189,44.38],[0.209,44.02],[0.229,43.57],
+      [0.249,43.08],[0.269,42.60],[0.289,42.19],[0.309,41.90],[0.329,41.77],[0.349,41.73],
+      [0.369,41.74],[0.389,41.74],[0.409,41.67],[0.429,41.50],[0.449,41.28],[0.469,41.06],
+      [0.489,40.86],[0.509,40.73],[0.529,40.66],[0.549,40.59],[0.569,40.50],[0.589,40.34],
+      [0.609,40.08],[0.629,39.74],[0.649,39.33],[0.669,38.88],[0.689,38.41],[0.709,37.94],
+      [0.729,37.46],[0.749,36.96],[0.769,36.44],[0.789,35.89],[0.809,35.30],[0.822,34.92]];
+    // IC95 espacial real [NDVI, lo, hi]
+    const ADRF_CI=[
+      [0.129,43.13,45.31],[0.169,44.08,45.28],[0.209,43.59,44.42],[0.249,42.41,43.50],
+      [0.289,41.46,42.82],[0.329,41.06,42.42],[0.369,41.12,42.22],[0.409,41.20,41.98],
+      [0.449,40.95,41.58],[0.489,40.56,41.16],[0.529,40.39,40.91],[0.569,40.27,40.73],
+      [0.609,39.81,40.35],[0.649,39.00,39.67],[0.689,38.02,38.78],[0.729,37.07,37.81],
+      [0.769,35.88,36.88],[0.809,34.70,35.88]];
+    function _interp(L,x,j){
+      if(x<=L[0][0])return L[0][j];
+      if(x>=L[L.length-1][0])return L[L.length-1][j];
+      for(let i=1;i<L.length;i++){if(x<=L[i][0]){const a=L[i-1],b=L[i];return a[j]+(b[j]-a[j])*(x-a[0])/(b[0]-a[0]);}}
+      return L[L.length-1][j];
     }
-    function marg_calc(x){const h=0.005;return(adrf_calc(x+h)-adrf_calc(x-h))/(2*h);}
-    function ciLo_calc(x){return adrf_calc(x)-(x<0.12?2.2:0.7);}
-    function ciHi_calc(x){return adrf_calc(x)+(x<0.12?2.2:0.7);}
+    function adrf_calc(x){return _interp(ADRF_LUT,x,1);}
+    function marg_calc(x){return(adrf_calc(x+0.05)-adrf_calc(x-0.05))/0.1;}  // dLST por unidad NDVI
+    function ciLo_calc(x){return _interp(ADRF_CI,x,1);}
+    function ciHi_calc(x){return _interp(ADRF_CI,x,2);}
 
     const aV_calc=grid_adrf.map(adrf_calc),cL_calc=grid_adrf.map(ciLo_calc),cH_calc=grid_adrf.map(ciHi_calc);
 
@@ -989,7 +1005,8 @@
       document.getElementById('ep-desc').style.color=cool?'var(--veg-light)':'#D85A30';
       document.getElementById('lst-a').textContent=lA.toFixed(1)+'°C';
       document.getElementById('lst-b').textContent=lB.toFixed(1)+'°C';
-      document.getElementById('lst-ic').textContent=`[${(d-0.9).toFixed(1)}, ${(d+0.9).toFixed(1)}]°C`;
+      const _hw=((ciHi_calc(a)-ciLo_calc(a))+(ciHi_calc(b)-ciLo_calc(b)))/4;
+      document.getElementById('lst-ic').textContent=`[${(d-_hw).toFixed(1)}, ${(d+_hw).toFixed(1)}]°C`;
       document.getElementById('marg-b').textContent=marg_calc(b).toFixed(1)+'°C/NDVI';
       const pix=Math.round(Math.abs(b-a)*16000);
       const area=Math.round(Math.abs(b-a)*600);
@@ -1022,15 +1039,16 @@
           plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y?c.parsed.y.toFixed(1)+'°C':''}}},
           scales:{
             x:{type:'linear',min:.09,max:.82,title:{display:true,text:'NDVI',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}},
-            y:{min:35,max:50,title:{display:true,text:'LST (°C)',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}}
+            y:{min:34,max:46,title:{display:true,text:'LST (°C)',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}}
           }
         }
       });
     }
 
-    const dyn_confs=['Height','NTL','Pop.dens','D.roads','Elev','D.water','LatLon','UrbUse','ForUse','Imper.'];
-    const dyn_rAntes=[0.42,0.38,0.16,0.16,0.16,0.06,0.03,0.52,0.29,0.06];
-    const dyn_rDesp =[0.04,0.03,0.03,0.03,0.06,0.01,0.03,0.07,0.04,0.04];
+    // Back-door set CORREGIDO (7 confusores): |corr| crudo vs |corr| ponderado IPW (Fase 5)
+    const dyn_confs=['Impermeab.','FAR','Agriculture','Forest/Nat.','Wetlands','Elevation','Wind Speed'];
+    const dyn_rAntes=[0.807,0.725,0.535,0.216,0.001,0.261,0.344];
+    const dyn_rDesp =[0.023,0.011,0.170,0.152,0.000,0.082,0.095];
 
     function initDynBal(){
       const ctx = document.getElementById('bal-chart');
@@ -1048,7 +1066,7 @@
           indexAxis:'y',responsive:true,maintainAspectRatio:false,
           plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>Math.abs(c.parsed.x).toFixed(3)}}},
           scales:{
-            x:{min:0,max:.6,title:{display:true,text:'|ASMD|',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}},
+            x:{min:0,max:.9,title:{display:true,text:'|Correlation| with NDVI',color:'#B0BEC5',font:{size:11}},grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#B0BEC5',font:{size:11}}},
             y:{grid:{display:false},ticks:{color:'#fff',font:{size:12}}}
           }
         }
@@ -1060,7 +1078,7 @@
       document.getElementById('bal-toggle').classList.toggle('on',dynBalOn);
       const narr=document.getElementById('bal-narr');
       if(dynBalOn){
-        narr.textContent='The GPS-IPW algorithm (model augmented with quadratic terms) achieved perfect balance: 13/13 confounders with ASMD < 0.10. The balanced pseudo-population allows for estimating the net causal effect of NDVI, eliminating observable confounding bias.';
+        narr.textContent='GPS-IPW reduced confounding: mean |correlation| with NDVI dropped from 0.41 to 0.08 (5/7 confounders below 0.10). The two land-use confounders — Agriculture (0.17) and Forest/Nature (0.15) — stay slightly above 0.10, a declared residual bias, which is why the doubly-robust AIPW estimator (−2.4°C) is reported as the primary estimate.';
         narr.style.borderLeftColor='var(--veg-light)';
         if(dynBalChart){
           dynBalChart.data.datasets[0].data=dyn_rDesp;

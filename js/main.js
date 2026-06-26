@@ -179,11 +179,30 @@ function initResultsDashboard() {
 
   const adrf_model = (x) => UHI_DATA.adrf(x);
   const marg_model = (x) => UHI_DATA.marginal(x);
-  const ciLo = (x) => adrf_model(x) - 0.75; // Real CI band from notebook approx
-  const ciHi = (x) => adrf_model(x) + 0.75;
+  // Banda IC95 REAL (Fase 6, bootstrap espacial). LUT [NDVI, lo, hi] + interpolacion.
+  const ciLUT = [
+    [0.129,43.13,45.31],[0.169,44.08,45.28],[0.209,43.59,44.42],[0.249,42.41,43.50],
+    [0.289,41.46,42.82],[0.329,41.06,42.42],[0.369,41.12,42.22],[0.409,41.20,41.98],
+    [0.449,40.95,41.58],[0.489,40.56,41.16],[0.529,40.39,40.91],[0.569,40.27,40.73],
+    [0.609,39.81,40.35],[0.649,39.00,39.67],[0.689,38.02,38.78],[0.729,37.07,37.81],
+    [0.769,35.88,36.88],[0.809,34.70,35.88]
+  ];
+  const ciInterp = (x, j) => {
+    if (x <= ciLUT[0][0]) return ciLUT[0][j];
+    if (x >= ciLUT[ciLUT.length - 1][0]) return ciLUT[ciLUT.length - 1][j];
+    for (let i = 1; i < ciLUT.length; i++) {
+      if (x <= ciLUT[i][0]) {
+        const a = ciLUT[i - 1], b = ciLUT[i];
+        return a[j] + (b[j] - a[j]) * (x - a[0]) / (b[0] - a[0]);
+      }
+    }
+    return ciLUT[ciLUT.length - 1][j];
+  };
+  const ciLo = (x) => ciInterp(x, 1);
+  const ciHi = (x) => ciInterp(x, 2);
 
   const N = 100;
-  const grid = Array.from({ length: N }, (_, i) => 0.05 + i * (0.787 - 0.05) / (N - 1));
+  const grid = Array.from({ length: N }, (_, i) => 0.13 + i * (0.82 - 0.13) / (N - 1));
 
   const ndviCtx = (v) => {
     if (v < 0.18) return 'asphalt / bare soil';
@@ -241,7 +260,9 @@ function initResultsDashboard() {
       
       if (elLstA) elLstA.textContent = lA.toFixed(1) + '°C';
       if (elLstB) elLstB.textContent = lB.toFixed(1) + '°C';
-      if (elIc) elIc.textContent = `[${(d - 0.75).toFixed(1)}, ${(d + 0.75).toFixed(1)}]°C`;
+      // IC del contraste ~ combinando el ancho de la banda IC95 espacial en A y B
+      const hw = ((ciHi(a) - ciLo(a)) + (ciHi(b) - ciLo(b))) / 4;
+      if (elIc) elIc.textContent = `[${(d - hw).toFixed(1)}, ${(d + hw).toFixed(1)}]°C`;
       if (elMarg) elMarg.textContent = marg_model(b).toFixed(1) + '°C / 0.1 NDVI';
     }
 
@@ -277,7 +298,7 @@ function initResultsDashboard() {
     const rDesp  = UHI_DATA.rIPW;
 
     if (balOn_res) {
-      if (narr) narr.textContent = 'GPS-IPW achieved balance: 9/9 confounders below ASMD 0.10. Average ASMD dropped from 0.373 to 0.051 (86% improvement). The pseudo-population allows estimating the net causal effect of NDVI.';
+      if (narr) narr.textContent = 'GPS-IPW reduced confounding: mean |correlation| dropped from 0.41 to 0.08 (5/7 confounders below 0.10). The two land-use confounders — Agriculture (0.17) and Forest/Nature (0.15) — remain slightly above 0.10, a declared residual bias, which is why the doubly-robust AIPW estimator (−2.4°C) is the primary estimate.';
       if (balChart_res) {
         balChart_res.data.datasets[0].data = rDesp;
         balChart_res.data.datasets[0].backgroundColor = rDesp.map(v => v > .10 ? '#D32F2F' : '#66BB6A');
@@ -311,8 +332,8 @@ function initResultsDashboard() {
           responsive: true, maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
-            x: { type: 'linear', min: .05, max: .8, ticks: { color: '#999', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
-            y: { min: 38, max: 48, ticks: { color: '#999', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
+            x: { type: 'linear', min: .13, max: .82, ticks: { color: '#999', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+            y: { min: 34, max: 46, ticks: { color: '#999', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.05)' } }
           }
         }
       });
@@ -325,7 +346,7 @@ function initResultsDashboard() {
         data: {
           labels: UHI_DATA.confounders,
           datasets: [{
-            label: '|ASMD|',
+            label: '|Correlation with NDVI|',
             data: UHI_DATA.rObs,
             backgroundColor: UHI_DATA.rObs.map(v => v > .10 ? '#D32F2F' : '#66BB6A'),
             borderRadius: 4
